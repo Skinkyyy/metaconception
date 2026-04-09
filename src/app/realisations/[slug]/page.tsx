@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { getProjetBySlug, getProjetsSlug } from "@/sanity/queries";
 import { urlFor } from "@/sanity/image";
 
+export const revalidate = 60;
+
 // ─── STATIC PARAMS ────────────────────────────────────────────────────────────
 
 export async function generateStaticParams() {

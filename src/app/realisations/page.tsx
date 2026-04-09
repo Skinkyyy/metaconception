@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import RealisationsGallery from "@/components/RealisationsGallery";
 import { getProjets } from "@/sanity/queries";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Réalisations — Metaconception | Dessinateur-Concepteur en Architecture",
   description:
