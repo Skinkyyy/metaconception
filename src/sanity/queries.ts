@@ -37,7 +37,7 @@ const PROJET_CARD_FIELDS = `
 
 export async function getProjets(): Promise<SanityProjet[]> {
   return client.fetch(
-    `*[_type == "projet"] | order(ordre asc, annee desc) { ${PROJET_CARD_FIELDS} }`
+    `*[_type == "projet"] | order(annee desc) { ${PROJET_CARD_FIELDS} }`
   );
 }
 
