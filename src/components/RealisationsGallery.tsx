@@ -14,7 +14,8 @@ type Category =
   | "Rénovation"
   | "Extension"
   | "Aménagement"
-  | "Opérations immobilières";
+  | "Opérations immobilières"
+  | "Déclaration préalable";
 
 const CATEGORIES: Category[] = [
   "Tous",
@@ -23,6 +24,7 @@ const CATEGORIES: Category[] = [
   "Extension",
   "Aménagement",
   "Opérations immobilières",
+  "Déclaration préalable",
 ];
 
 // ─── BLUEPRINT SVG PATTERNS (3 variants) ─────────────────────────────────────

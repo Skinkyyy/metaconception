@@ -35,6 +35,7 @@ export const projetType = defineType({
           { title: "Rénovation", value: "Rénovation" },
           { title: "Aménagement", value: "Aménagement" },
           { title: "Opérations immobilières", value: "Opérations immobilières" },
+          { title: "Déclaration préalable", value: "Déclaration préalable" },
         ],
       },
       validation: (r) => r.required(),
@@ -64,6 +65,34 @@ export const projetType = defineType({
       name: "avancement",
       title: "Avancement (ex: PC accepté, Maison terminée...)",
       type: "string",
+    }),
+    defineField({
+      name: "dimensions",
+      title: "Dimensions (ex: 8×4 m)",
+      type: "string",
+    }),
+    defineField({
+      name: "volume",
+      title: "Volume (ex: 32 m³)",
+      type: "string",
+    }),
+    defineField({
+      name: "typePiscine",
+      title: "Type de piscine",
+      type: "string",
+      options: {
+        list: [
+          { title: "Enterrée", value: "Enterrée" },
+          { title: "Semi-enterrée", value: "Semi-enterrée" },
+          { title: "Hors-sol", value: "Hors-sol" },
+        ],
+      },
+    }),
+    defineField({
+      name: "video",
+      title: "Vidéo Vimeo (URL)",
+      type: "url",
+      description: "Ex: https://vimeo.com/123456789",
     }),
     defineField({
       name: "description",

@@ -46,6 +46,9 @@ export default async function ProjetPage({
     { label: "Année", value: projet.annee },
     { label: "Surface", value: projet.surface },
     { label: "Typologie", value: projet.typologie },
+    { label: "Dimensions", value: projet.dimensions },
+    { label: "Volume", value: projet.volume },
+    { label: "Type", value: projet.typePiscine },
     { label: "Mission", value: projet.mission },
     { label: "Avancement", value: projet.avancement },
   ].filter((item) => item.value);
@@ -136,6 +139,25 @@ export default async function ProjetPage({
                 </div>
               );
             })}
+          </div>
+        </section>
+      )}
+
+      {/* ── Vidéo ── */}
+      {projet.video && (
+        <section className="bg-anthracite py-20 px-6">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-terracotta text-[10px] font-medium tracking-[0.28em] uppercase mb-8">
+              Vidéo
+            </p>
+            <div className="aspect-video">
+              <iframe
+                src={`https://player.vimeo.com/video/${projet.video.split("vimeo.com/")[1]?.split("?")[0]}`}
+                className="w-full h-full"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
           </div>
         </section>
       )}

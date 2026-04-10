@@ -18,6 +18,10 @@ export interface SanityProjet {
   typologie?: string;
   mission?: string;
   avancement?: string;
+  dimensions?: string;
+  volume?: string;
+  typePiscine?: string;
+  video?: string;
   description?: string;
   imageprincipale?: SanityImage;
   galerie?: SanityImage[];
@@ -54,6 +58,10 @@ export async function getProjetBySlug(slug: string): Promise<SanityProjet | null
       typologie,
       mission,
       avancement,
+      dimensions,
+      volume,
+      typePiscine,
+      video,
       description,
       prestations,
       imageprincipale,
