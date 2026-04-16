@@ -15,7 +15,8 @@ type Category =
   | "Extension"
   | "Aménagement"
   | "Opérations immobilières"
-  | "Déclaration préalable";
+  | "Déclaration préalable"
+  | "Vidéos";
 
 const CATEGORIES: Category[] = [
   "Tous",
@@ -25,6 +26,7 @@ const CATEGORIES: Category[] = [
   "Aménagement",
   "Opérations immobilières",
   "Déclaration préalable",
+  "Vidéos",
 ];
 
 // ─── BLUEPRINT SVG PATTERNS (3 variants) ─────────────────────────────────────
@@ -170,6 +172,8 @@ export default function RealisationsGallery({ projets }: { projets: SanityProjet
   const filtered =
     filter === "Tous"
       ? projets
+      : filter === "Vidéos"
+      ? projets.filter((p) => p.video)
       : projets.filter((p) => p.categorie === filter);
 
   return (

@@ -36,7 +36,8 @@ const PROJET_CARD_FIELDS = `
   categorie,
   annee,
   surface,
-  imageprincipale
+  imageprincipale,
+  video
 `;
 
 export async function getProjets(): Promise<SanityProjet[]> {
