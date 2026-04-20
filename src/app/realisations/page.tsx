@@ -37,7 +37,7 @@ function PageHero() {
           Portfolio
         </p>
         <h1 className="text-warm-white font-extralight text-5xl sm:text-6xl md:text-7xl leading-[1.06]">
-          Nos <span className="font-semibold">réalisations</span>
+          Mes <span className="font-semibold">réalisations</span>
         </h1>
         <div className="w-14 h-px bg-terracotta mt-7 mb-8" />
         <p className="text-muted text-base sm:text-lg leading-relaxed max-w-lg">
