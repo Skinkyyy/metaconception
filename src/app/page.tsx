@@ -290,7 +290,7 @@ function About() {
           <div className="mt-12 pt-8 border-t border-anthracite-soft grid grid-cols-3 gap-6">
             {[
               { value: "15+", label: "Ans\nd'expérience" },
-              { value: "3", label: "Pays\nd'exercice" },
+              { value: "2", label: "Pays\nd'exercice" },
               { value: "100%", label: "Projets\nsuivis" },
             ].map(({ value, label }) => (
               <div key={label}>
