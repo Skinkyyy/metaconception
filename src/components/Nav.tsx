@@ -6,6 +6,7 @@ import Link from "next/link";
 const navLinks = [
   { label: "Services", href: "/#services" },
   { label: "Réalisations", href: "/realisations" },
+  { label: "Analyse PLU", href: "/plu" },
   { label: "À propos", href: "/#a-propos" },
 ];
 
@@ -61,10 +62,11 @@ export default function Nav() {
 
         {/* Mobile hamburger */}
         <button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden text-warm-white w-8 h-8 flex flex-col justify-center gap-1.5"
           aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
-          aria-expanded={isOpen}
+          aria-expanded={isOpen ? "true" : "false"}
         >
           <span
             className={`block w-6 h-px bg-current origin-center transition-all duration-200 ${

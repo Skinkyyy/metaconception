@@ -218,6 +218,127 @@ function Services() {
   );
 }
 
+const pluUseCases = [
+  {
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.4} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+    title: "Faisabilité en quelques minutes",
+    description:
+      "Avant même de contacter un professionnel, vérifiez si votre projet est réalisable sur votre terrain : surface constructible disponible, hauteur autorisée, emprise au sol.",
+  },
+  {
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.4} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+      </svg>
+    ),
+    title: "Points clés du PLU résumés",
+    description:
+      "L'IA extrait et synthétise les règles qui s'appliquent à votre parcelle : retraits, emprise maximale, hauteur limite, stationnement — sans lire 200 pages de règlement.",
+  },
+  {
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.4} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+      </svg>
+    ),
+    title: "Points bloquants identifiés",
+    description:
+      "Retrait insuffisant, emprise dépassée, hauteur hors norme — l'outil signale en temps réel ce qui pourrait compromettre l'obtention de votre permis de construire.",
+  },
+  {
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.4} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+      </svg>
+    ),
+    title: "Zone constructible visualisée",
+    description:
+      "Dessinez votre projet directement sur le plan cadastral et visualisez la zone autorisée selon les retraits PLU. Simulez extensions, surélévations ou constructions neuves.",
+  },
+];
+
+function PluPromo() {
+  return (
+    <section className="bg-anthracite border-y border-anthracite-soft px-6 py-20 relative overflow-hidden">
+      <span
+        aria-hidden="true"
+        className="absolute right-[-2vw] top-0 select-none text-[22vw] font-bold leading-none text-white/[0.022] pointer-events-none"
+      >
+        PLU
+      </span>
+
+      <div className="max-w-6xl mx-auto relative">
+
+        {/* En-tête */}
+        <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end mb-14">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <p className="text-terracotta text-[10px] font-medium tracking-[0.28em] uppercase">
+                Outil en ligne
+              </p>
+              <span className="inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-400/25 text-amber-300 text-[9px] font-semibold tracking-[0.2em] uppercase px-2 py-0.5 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                Bêta gratuit
+              </span>
+            </div>
+            <h2 className="text-warm-white text-3xl md:text-4xl font-light leading-[1.15]">
+              Analysez votre projet{" "}
+              <span className="font-semibold">avant de vous lancer</span>
+            </h2>
+            <div className="w-14 h-px bg-terracotta mt-6" />
+          </div>
+          <a
+            href="/plu"
+            className="hidden lg:inline-flex items-center gap-3 bg-terracotta text-white text-[10px] font-semibold tracking-[0.2em] uppercase px-7 py-3.5 hover:bg-terracotta-dark transition-colors duration-200 shrink-0"
+          >
+            Tester l&apos;outil
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+
+        {/* Intro */}
+        <p className="text-muted text-sm leading-relaxed max-w-2xl mb-12">
+          Avant de consulter un professionnel ou de déposer un dossier,
+          notre analyseur PLU vous donne une première lecture claire et immédiate
+          de ce que la réglementation autorise sur votre terrain.
+          Gratuit, sans inscription, en quelques minutes.
+        </p>
+
+        {/* Cards use cases */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-anthracite-soft">
+          {pluUseCases.map(({ icon, title, description }) => (
+            <div key={title} className="bg-[#1c1812] p-6 hover:bg-[#221e18] transition-colors duration-300">
+              <div className="text-terracotta mb-4">{icon}</div>
+              <h3 className="text-warm-white text-sm font-semibold leading-snug mb-3">{title}</h3>
+              <p className="text-muted/65 text-xs leading-relaxed">{description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA mobile */}
+        <div className="mt-8 lg:hidden">
+          <a
+            href="/plu"
+            className="inline-flex items-center gap-3 bg-terracotta text-white text-[10px] font-semibold tracking-[0.2em] uppercase px-7 py-3.5 hover:bg-terracotta-dark transition-colors duration-200"
+          >
+            Tester l&apos;outil
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
 function About() {
   return (
     <section id="a-propos" className="bg-anthracite-mid py-28 px-6">
@@ -309,7 +430,7 @@ function About() {
 
 function Footer() {
   return (
-    <footer id="contact" className="bg-anthracite border-t border-anthracite-soft py-20 px-6">
+    <footer id="footer" className="bg-anthracite border-t border-anthracite-soft py-20 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-14">
 
@@ -368,7 +489,15 @@ function Footer() {
           <p className="text-muted/35 text-xs">
             © {new Date().getFullYear()} Metaconception. Tous droits réservés.
           </p>
-          <p className="text-muted/20 text-xs tracking-widest">metaconception.eu</p>
+          <div className="flex items-center gap-4">
+            <a
+              href="/mentions-legales"
+              className="text-muted/35 text-xs hover:text-muted/70 transition-colors"
+            >
+              Mentions légales
+            </a>
+            <p className="text-muted/20 text-xs tracking-widest">metaconception.eu</p>
+          </div>
         </div>
       </div>
     </footer>
@@ -416,6 +545,7 @@ export default function Home() {
     <main>
       <Hero />
       <Services />
+      <PluPromo />
       <About />
       <Contact />
       <Footer />

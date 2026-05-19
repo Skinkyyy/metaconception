@@ -1,0 +1,2095 @@
+[
+  {
+    "prenom": "Elio",
+    "nom": "Giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "542 Chemin des Condamines 34800 Canet",
+    "commune": "",
+    "parcelRef": "34051 AI 0334",
+    "parcelSurface": 539,
+    "projectTypeLabel": "Construction neuve",
+    "existingM2": 0,
+    "drawnM2": 124,
+    "totalM2": 124,
+    "empriseP": 23,
+    "drawnShapes": [
+      {
+        "label": "Bâtiment",
+        "type": "batiment",
+        "surfaceM2": 28,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "Bâtiment",
+        "type": "batiment",
+        "surfaceM2": 49,
+        "niveaux": "r1"
+      },
+      {
+        "label": "Bâtiment",
+        "type": "batiment",
+        "surfaceM2": 47,
+        "niveaux": "rdc"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 323.4,
+      "empriseNonReglementee": false,
+      "hauteurMax": 8.5,
+      "parkingNombrePlaces": 2,
+      "resume": "La zone Ub de Canet est une zone urbaine résidentielle pavillonnaire. Le projet est soumis aux règles du PLU et à un Cahier des Prescriptions Architecturales et Paysagères (CPAP) du lotissement. Les règles du CPAP sont souvent plus restrictives, notamment en matière d'espaces libres, d'aspect architectural et de clôtures. L'implantation des constructions principales est fixée à 5 mètres de la voie et 3 mètres des limites séparatives. La hauteur maximale est de 8,50 mètres (R+1). L'emprise au sol est limitée à 60% de la parcelle. Un minimum de 50% de la surface du lot doit être non imperméabilisé et végétalisé. Deux places de stationnement non closes sont exigées par logement. Un seul logement par lot est autorisé. Les annexes en limite séparative sont limitées à 30m² d'emprise et 3m de hauteur.",
+      "recommandation": "Le projet de construction neuve doit s'inscrire dans une démarche qualitative forte, en respectant scrupuleusement les prescriptions architecturales et paysagères du CPAP, qui sont souvent plus contraignantes que le PLU. Une attention particulière doit être portée à la volumétrie, aux matériaux, aux couleurs (palette Annexe 1 du CPAP), aux toitures (pentes, débords, intégration des équipements), aux clôtures et aux espaces verts (50% pleine terre). La consultation de l'Architecte Coordonnateur du lotissement est obligatoire et essentielle pour la validation du projet.",
+      "avertissement": "Cette analyse intègre le règlement PLU et le CPAP du lotissement lus par l'IA. Les règles du CPAP s'appliquent en priorité quand plus restrictives. Vérifiez avec le service urbanisme et l'architecte coordonnateur du lotissement avant tout dépôt de dossier."
+    },
+    "createdAt": "2026-05-16T16:40:42.992Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "542 Chemin des Condamines 34800 Canet",
+    "commune": "",
+    "parcelRef": "34051 AI 0334",
+    "parcelSurface": 539,
+    "projectTypeLabel": "Construction neuve",
+    "existingM2": 0,
+    "drawnM2": 119,
+    "totalM2": 119,
+    "empriseP": 22,
+    "drawnShapes": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 63,
+        "niveaux": "r1"
+      },
+      {
+        "label": "RDC",
+        "type": "batiment",
+        "surfaceM2": 28,
+        "niveaux": "rdc"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 323.4,
+      "empriseNonReglementee": false,
+      "hauteurMax": 8.5,
+      "parkingNombrePlaces": 2,
+      "resume": "La zone Ub est une zone urbaine récente à dominante d'habitat résidentiel pavillonnaire, soumise aux règles du PLU de Canet et aux prescriptions architecturales et paysagères (CPAP) du lotissement. Le projet doit s'inscrire dans une identité méditerranéenne et contemporaine, avec une attention particulière à la qualité des espaces et à l'intégration paysagère. Les règles du CPAP sont plus restrictives sur plusieurs aspects, notamment les espaces libres, l'aspect architectural (interdiction de certains décors, couleurs, matériaux), et les clôtures. Un seul logement par lot est autorisé. Le stationnement exige 2 places non closes par logement. Les annexes couvertes et non closes peuvent être implantées en limite séparative sous conditions de surface et hauteur.",
+      "recommandation": "Il est fortement recommandé de consulter l'Architecte Coordonnateur du lotissement dès la phase d'esquisse pour s'assurer de la conformité du projet aux prescriptions architecturales et paysagères du CPAP, qui sont souvent plus détaillées et restrictives que le PLU. Une attention particulière doit être portée à l'intégration des volumes, au choix des matériaux et couleurs (palette méditerranéenne sobre), et à la gestion des eaux pluviales à la parcelle.",
+      "avertissement": "Cette analyse intègre le règlement PLU et le CPAP du lotissement lus par l'IA. Les règles du CPAP s'appliquent en priorité quand plus restrictives. Vérifiez avec le service urbanisme et l'architecte coordonnateur du lotissement avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        3.48583442,
+        43.60605819
+      ],
+      [
+        3.48592758,
+        43.60588798
+      ],
+      [
+        3.48564722,
+        43.60582661
+      ],
+      [
+        3.48562104,
+        43.6059814
+      ],
+      [
+        3.48531845,
+        43.60597079
+      ],
+      [
+        3.48531243,
+        43.60600653
+      ],
+      [
+        3.48567448,
+        43.60601922
+      ],
+      [
+        3.48573123,
+        43.60605235
+      ],
+      [
+        3.48583442,
+        43.60605819
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.606029554744545,
+        3.4858064031148173
+      ],
+      [
+        43.60590481284066,
+        3.4858746773393987
+      ],
+      [
+        43.60586274251367,
+        3.4856824851139665
+      ],
+      [
+        43.60599174796142,
+        3.4856606661164715
+      ],
+      [
+        43.6059928136828,
+        3.4856910715085374
+      ],
+      [
+        43.60602627107916,
+        3.485748382321792
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.606014461758,
+        3.485858353511692
+      ],
+      [
+        43.60593026863449,
+        3.485904434419902
+      ],
+      [
+        43.60587227451685,
+        3.4856394966519093
+      ],
+      [
+        43.6059724203783,
+        3.4856225587447254
+      ],
+      [
+        43.60597520947134,
+        3.4857021325142243
+      ],
+      [
+        43.606008885131935,
+        3.4857598172029927
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60597412419435,
+            3.4853178883925575
+          ],
+          [
+            43.60599909188544,
+            3.4853136828665283
+          ],
+          [
+            43.60600964139945,
+            3.485433134931079
+          ],
+          [
+            43.60598467370836,
+            3.4854373404571084
+          ],
+          [
+            43.60597412419435,
+            3.4853178883925575
+          ]
+        ]
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60595807033392,
+            3.4856249858017825
+          ],
+          [
+            43.60596143518829,
+            3.485667835975262
+          ],
+          [
+            43.605890902110104,
+            3.485680148090898
+          ],
+          [
+            43.60588676440136,
+            3.4856371051346207
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 63,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.60596015159581,
+            3.4856668258290844
+          ],
+          [
+            43.60596960922415,
+            3.4857652098069245
+          ],
+          [
+            43.60589836937346,
+            3.4857782710202336
+          ],
+          [
+            43.605890902110104,
+            3.485680148090898
+          ]
+        ]
+      },
+      {
+        "label": "RDC",
+        "type": "batiment",
+        "surfaceM2": 28,
+        "niveaux": "rdc",
+        "polygon": [
+          [
+            43.60596792034679,
+            3.48573790519112
+          ],
+          [
+            43.60599751862039,
+            3.4857336092291265
+          ],
+          [
+            43.60600418694858,
+            3.4858029772175394
+          ],
+          [
+            43.60595193582186,
+            3.4858120980716247
+          ],
+          [
+            43.60594681011983,
+            3.4857693898264195
+          ],
+          [
+            43.60596960922415,
+            3.4857652098069245
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-18T16:55:41.778Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "Rue Chopin 34400 Lunel",
+    "commune": "",
+    "parcelRef": "34145 BN 0331",
+    "parcelSurface": 300,
+    "projectTypeLabel": "Agrandissement",
+    "existingM2": 117,
+    "drawnM2": 0,
+    "totalM2": 117,
+    "empriseP": 39,
+    "drawnShapes": [
+      {
+        "label": "🅿 1 place",
+        "type": "autre",
+        "surfaceM2": 18,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 18,
+        "niveaux": "r1"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 50,
+      "empriseNonReglementee": false,
+      "hauteurMax": 10,
+      "parkingNombrePlaces": 0,
+      "resume": "La zone IIAUb est une zone d'urbanisation future à vocation principale d'habitation et d'équipements collectifs, destinée à être urbanisée sous forme d'opérations d'ensemble. Les extensions de bâtiments existants, y compris les surélévations, sont généralement permises sans limite de surface pour l'extension elle-même, sous réserve du respect des règles de hauteur, d'implantation, d'emprise au sol, de gestion des risques d'inondation et d'intégration architecturale. Un minimum de 25% d'espaces libres en pleine terre est exigé. Le stationnement est requis à raison de 2 places par logement pour l'habitat individuel, à réaliser en dehors des voies publiques.",
+      "recommandation": "Étant donné que la zone IIAUb est destinée à être urbanisée sous forme d'opérations d'ensemble, il est fortement recommandé de consulter le service urbanisme de la commune pour s'assurer de la compatibilité du projet d'agrandissement avec les orientations d'aménagement et de programmation spécifiques à cette zone, et pour clarifier les conditions d'application des règles d'implantation et de hauteur pour une extension sur un bâti existant. Une étude de vulnérabilité aux inondations pourrait être nécessaire.",
+      "avertissement": "Cette analyse est basée sur le règlement PLU officiel téléchargé depuis le Géoportail de l'Urbanisme. Vérifiez toujours avec le service urbanisme de votre commune avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        4.11794748,
+        43.67535213
+      ],
+      [
+        4.11785567,
+        43.67546952
+      ],
+      [
+        4.1180714,
+        43.67555837
+      ],
+      [
+        4.11812657,
+        43.67548815
+      ],
+      [
+        4.11816346,
+        43.67544116
+      ],
+      [
+        4.11794748,
+        43.67535213
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.67539198457714,
+        4.117965259385226
+      ],
+      [
+        43.67546017383586,
+        4.117911928983626
+      ],
+      [
+        43.67551855832208,
+        4.118053687961844
+      ],
+      [
+        43.67547650648913,
+        4.118086726976716
+      ],
+      [
+        43.67545047829422,
+        4.118107160688359
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.675393123530725,
+        4.117915419210699
+      ],
+      [
+        43.67542852893885,
+        4.1178877288578555
+      ],
+      [
+        43.67551742459859,
+        4.1181035697208195
+      ],
+      [
+        43.67548815,
+        4.11812657
+      ],
+      [
+        43.675482115654916,
+        4.118131307326882
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 1 place",
+        "type": "autre",
+        "surfaceM2": 18,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.67546785447086,
+            4.118142503221323
+          ],
+          [
+            43.67544207589977,
+            4.118162740963137
+          ],
+          [
+            43.67546292283651,
+            4.118213503869536
+          ],
+          [
+            43.6754887014076,
+            4.118193266127722
+          ],
+          [
+            43.67546785447086,
+            4.118142503221323
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 18,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.675377282428435,
+            4.118008497875916
+          ],
+          [
+            43.67540119220765,
+            4.117989385542818
+          ],
+          [
+            43.67542788073835,
+            4.118054129875164
+          ],
+          [
+            43.675403569233524,
+            4.118072267663218
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-18T19:59:08.007Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "Rue Chopin 34400 Lunel",
+    "commune": "",
+    "parcelRef": "34145 BN 0331",
+    "parcelSurface": 300,
+    "projectTypeLabel": "Agrandissement",
+    "existingM2": 117,
+    "drawnM2": 0,
+    "totalM2": 117,
+    "empriseP": 39,
+    "drawnShapes": [
+      {
+        "label": "🅿 1 place",
+        "type": "autre",
+        "surfaceM2": 18,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 18,
+        "niveaux": "r1"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 50,
+      "empriseNonReglementee": false,
+      "hauteurMax": 10,
+      "parkingNombrePlaces": 0,
+      "resume": "La zone IIAUb est une zone d'urbanisation future à vocation principale d'habitation et d'équipements collectifs, destinée à être urbanisée sous forme d'opérations d'ensemble. Les extensions de bâtiments existants, y compris les surélévations, sont généralement permises sans limite de surface pour l'extension elle-même, sous réserve du respect des règles de hauteur, d'implantation, d'emprise au sol, de gestion des risques d'inondation et d'intégration architecturale. Un minimum de 25% d'espaces libres en pleine terre est exigé. Le stationnement est requis à raison de 2 places par logement pour l'habitat individuel, à réaliser en dehors des voies publiques.",
+      "recommandation": "Étant donné que la zone IIAUb est destinée à être urbanisée sous forme d'opérations d'ensemble, il est fortement recommandé de consulter le service urbanisme de la commune pour s'assurer de la compatibilité du projet d'agrandissement avec les orientations d'aménagement et de programmation spécifiques à cette zone, et pour clarifier les conditions d'application des règles d'implantation et de hauteur pour une extension sur un bâti existant. Une étude de vulnérabilité aux inondations pourrait être nécessaire.",
+      "avertissement": "Cette analyse est basée sur le règlement PLU officiel téléchargé depuis le Géoportail de l'Urbanisme. Vérifiez toujours avec le service urbanisme de votre commune avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        4.11794748,
+        43.67535213
+      ],
+      [
+        4.11785567,
+        43.67546952
+      ],
+      [
+        4.1180714,
+        43.67555837
+      ],
+      [
+        4.11812657,
+        43.67548815
+      ],
+      [
+        4.11816346,
+        43.67544116
+      ],
+      [
+        4.11794748,
+        43.67535213
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.67539198457714,
+        4.117965259385226
+      ],
+      [
+        43.67546017383586,
+        4.117911928983626
+      ],
+      [
+        43.67551855832208,
+        4.118053687961844
+      ],
+      [
+        43.67547650648913,
+        4.118086726976716
+      ],
+      [
+        43.67545047829422,
+        4.118107160688359
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.675393123530725,
+        4.117915419210699
+      ],
+      [
+        43.67542852893885,
+        4.1178877288578555
+      ],
+      [
+        43.67551742459859,
+        4.1181035697208195
+      ],
+      [
+        43.67548815,
+        4.11812657
+      ],
+      [
+        43.675482115654916,
+        4.118131307326882
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 1 place",
+        "type": "autre",
+        "surfaceM2": 18,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.67546785447086,
+            4.118142503221323
+          ],
+          [
+            43.67544207589977,
+            4.118162740963137
+          ],
+          [
+            43.67546292283651,
+            4.118213503869536
+          ],
+          [
+            43.6754887014076,
+            4.118193266127722
+          ],
+          [
+            43.67546785447086,
+            4.118142503221323
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 18,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.675377282428435,
+            4.118008497875916
+          ],
+          [
+            43.67540119220765,
+            4.117989385542818
+          ],
+          [
+            43.67542788073835,
+            4.118054129875164
+          ],
+          [
+            43.675403569233524,
+            4.118072267663218
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-18T20:11:02.389Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "Rue Chopin 34400 Lunel",
+    "commune": "",
+    "parcelRef": "34145 BN 0331",
+    "parcelSurface": 300,
+    "projectTypeLabel": "Agrandissement",
+    "existingM2": 117,
+    "drawnM2": 0,
+    "totalM2": 117,
+    "empriseP": 39,
+    "drawnShapes": [
+      {
+        "label": "🅿 1 place",
+        "type": "autre",
+        "surfaceM2": 18,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 18,
+        "niveaux": "r1"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 50,
+      "empriseNonReglementee": false,
+      "hauteurMax": 10,
+      "parkingNombrePlaces": 0,
+      "resume": "La zone IIAUb est une zone d'urbanisation future à vocation principale d'habitation et d'équipements collectifs, destinée à être urbanisée sous forme d'opérations d'ensemble. Les extensions de bâtiments existants, y compris les surélévations, sont généralement permises sans limite de surface pour l'extension elle-même, sous réserve du respect des règles de hauteur, d'implantation, d'emprise au sol, de gestion des risques d'inondation et d'intégration architecturale. Un minimum de 25% d'espaces libres en pleine terre est exigé. Le stationnement est requis à raison de 2 places par logement pour l'habitat individuel, à réaliser en dehors des voies publiques.",
+      "recommandation": "Étant donné que la zone IIAUb est destinée à être urbanisée sous forme d'opérations d'ensemble, il est fortement recommandé de consulter le service urbanisme de la commune pour s'assurer de la compatibilité du projet d'agrandissement avec les orientations d'aménagement et de programmation spécifiques à cette zone, et pour clarifier les conditions d'application des règles d'implantation et de hauteur pour une extension sur un bâti existant. Une étude de vulnérabilité aux inondations pourrait être nécessaire.",
+      "avertissement": "Cette analyse est basée sur le règlement PLU officiel téléchargé depuis le Géoportail de l'Urbanisme. Vérifiez toujours avec le service urbanisme de votre commune avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        4.11794748,
+        43.67535213
+      ],
+      [
+        4.11785567,
+        43.67546952
+      ],
+      [
+        4.1180714,
+        43.67555837
+      ],
+      [
+        4.11812657,
+        43.67548815
+      ],
+      [
+        4.11816346,
+        43.67544116
+      ],
+      [
+        4.11794748,
+        43.67535213
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.67539198457714,
+        4.117965259385226
+      ],
+      [
+        43.67546017383586,
+        4.117911928983626
+      ],
+      [
+        43.67551855832208,
+        4.118053687961844
+      ],
+      [
+        43.67547650648913,
+        4.118086726976716
+      ],
+      [
+        43.67545047829422,
+        4.118107160688359
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.675393123530725,
+        4.117915419210699
+      ],
+      [
+        43.67542852893885,
+        4.1178877288578555
+      ],
+      [
+        43.67551742459859,
+        4.1181035697208195
+      ],
+      [
+        43.67548815,
+        4.11812657
+      ],
+      [
+        43.675482115654916,
+        4.118131307326882
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 1 place",
+        "type": "autre",
+        "surfaceM2": 18,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.67546785447086,
+            4.118142503221323
+          ],
+          [
+            43.67544207589977,
+            4.118162740963137
+          ],
+          [
+            43.67546292283651,
+            4.118213503869536
+          ],
+          [
+            43.6754887014076,
+            4.118193266127722
+          ],
+          [
+            43.67546785447086,
+            4.118142503221323
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 18,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.675377282428435,
+            4.118008497875916
+          ],
+          [
+            43.67540119220765,
+            4.117989385542818
+          ],
+          [
+            43.67542788073835,
+            4.118054129875164
+          ],
+          [
+            43.675403569233524,
+            4.118072267663218
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-18T20:24:37.869Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "542 Chemin des Condamines 34800 Canet",
+    "commune": "",
+    "parcelRef": "34051 AI 0334",
+    "parcelSurface": 539,
+    "projectTypeLabel": "Construction neuve",
+    "existingM2": 0,
+    "drawnM2": 101,
+    "totalM2": 101,
+    "empriseP": 19,
+    "drawnShapes": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 73,
+        "niveaux": "r1"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 269.5,
+      "empriseNonReglementee": false,
+      "hauteurMax": 8.5,
+      "parkingNombrePlaces": 2,
+      "resume": "La zone Ub est principalement dédiée à l'habitat résidentiel pavillonnaire, avec une faible mixité des fonctions urbaines. Le projet étant situé dans un lotissement, les prescriptions du CPAP s'appliquent et sont souvent plus restrictives que le PLU. Les constructions principales doivent respecter un retrait de 5m par rapport à la voie publique et 3m par rapport aux limites séparatives. La hauteur maximale est de 8.50m (R+1). L'emprise au sol est limitée à 50% de la parcelle, avec un minimum de 50% d'espaces non imperméabilisés et végétalisés. Deux places de stationnement non closes sont requises par logement, avec une préférence pour une fermeture par porte de garage. L'aspect architectural doit être sobre, contemporain et méditerranéen, avec des règles strictes sur les matériaux, les couleurs (pas de blanc pur, pas d'enduits rustiques), les toitures (pentes 30-35%, toitures-terrasses végétalisées ou à rétention d'eaux pluviales), et l'intégration des éléments techniques. Les annexes (garages, abris de jardin, terrasses non closes) peuvent être implantées en limite séparative sous conditions (30m² d'emprise max, 3m de hauteur max, 10m de longueur cumulée), tandis que les piscines et leurs locaux techniques doivent respecter un retrait de 3m.",
+      "recommandation": "Il est fortement recommandé de consulter l'architecte coordonnateur du lotissement dès la phase d'esquisse pour s'assurer de la conformité du projet aux prescriptions architecturales et paysagères du CPAP, qui sont souvent plus détaillées et restrictives que le PLU. Une attention particulière doit être portée à l'intégration des volumes, au choix des matériaux et couleurs, et à la gestion des espaces extérieurs et du stationnement pour s'inscrire dans l'identité méditerranéenne et contemporaine souhaitée.",
+      "avertissement": "Cette analyse intègre le règlement PLU et le CPAP du lotissement lus par l'IA. Les règles du CPAP s'appliquent en priorité quand plus restrictives. Vérifiez avec le service urbanisme et l'architecte coordonnateur du lotissement avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        3.48583442,
+        43.60605819
+      ],
+      [
+        3.48592758,
+        43.60588798
+      ],
+      [
+        3.48564722,
+        43.60582661
+      ],
+      [
+        3.48562104,
+        43.6059814
+      ],
+      [
+        3.48531845,
+        43.60597079
+      ],
+      [
+        3.48531243,
+        43.60600653
+      ],
+      [
+        3.48567448,
+        43.60601922
+      ],
+      [
+        3.48573123,
+        43.60605235
+      ],
+      [
+        3.48583442,
+        43.60605819
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.606029554744545,
+        3.4858064031148173
+      ],
+      [
+        43.60590481284066,
+        3.4858746773393987
+      ],
+      [
+        43.60586274251367,
+        3.4856824851139665
+      ],
+      [
+        43.60599174796142,
+        3.4856606661164715
+      ],
+      [
+        43.6059928136828,
+        3.4856910715085374
+      ],
+      [
+        43.60602627107916,
+        3.485748382321792
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.606014461758,
+        3.485858353511692
+      ],
+      [
+        43.60593026863449,
+        3.485904434419902
+      ],
+      [
+        43.60587227451685,
+        3.4856394966519093
+      ],
+      [
+        43.6059724203783,
+        3.4856225587447254
+      ],
+      [
+        43.60597520947134,
+        3.4857021325142243
+      ],
+      [
+        43.606008885131935,
+        3.4857598172029927
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60597622245114,
+            3.4853175349648593
+          ],
+          [
+            43.60599931297054,
+            3.485313645627234
+          ],
+          [
+            43.60600986248418,
+            3.4854330976961143
+          ],
+          [
+            43.60598677196478,
+            3.48543698703374
+          ],
+          [
+            43.60597622245114,
+            3.4853175349648593
+          ]
+        ]
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60595118836891,
+            3.485625873718142
+          ],
+          [
+            43.605955010341276,
+            3.4856689723467995
+          ],
+          [
+            43.605884347213234,
+            3.4856811538416204
+          ],
+          [
+            43.605880632358534,
+            3.485638083070312
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 73,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.60595531551863,
+            3.4856681189993344
+          ],
+          [
+            43.605966475526884,
+            3.4857815676027664
+          ],
+          [
+            43.60589170262147,
+            3.4857896384997296
+          ],
+          [
+            43.605884347213234,
+            3.4856811538416204
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-19T07:57:18.892Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "542 Chemin des Condamines 34800 Canet",
+    "commune": "",
+    "parcelRef": "34051 AI 0334",
+    "parcelSurface": 539,
+    "projectTypeLabel": "Construction neuve",
+    "existingM2": 0,
+    "drawnM2": 101,
+    "totalM2": 101,
+    "empriseP": 19,
+    "drawnShapes": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 73,
+        "niveaux": "r1"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 269.5,
+      "empriseNonReglementee": false,
+      "hauteurMax": 8.5,
+      "parkingNombrePlaces": 2,
+      "resume": "La zone Ub est principalement dédiée à l'habitat résidentiel pavillonnaire, avec une faible mixité des fonctions urbaines. Le projet étant situé dans un lotissement, les prescriptions du CPAP s'appliquent et sont souvent plus restrictives que le PLU. Les constructions principales doivent respecter un retrait de 5m par rapport à la voie publique et 3m par rapport aux limites séparatives. La hauteur maximale est de 8.50m (R+1). L'emprise au sol est limitée à 50% de la parcelle, avec un minimum de 50% d'espaces non imperméabilisés et végétalisés. Deux places de stationnement non closes sont requises par logement, avec une préférence pour une fermeture par porte de garage. L'aspect architectural doit être sobre, contemporain et méditerranéen, avec des règles strictes sur les matériaux, les couleurs (pas de blanc pur, pas d'enduits rustiques), les toitures (pentes 30-35%, toitures-terrasses végétalisées ou à rétention d'eaux pluviales), et l'intégration des éléments techniques. Les annexes (garages, abris de jardin, terrasses non closes) peuvent être implantées en limite séparative sous conditions (30m² d'emprise max, 3m de hauteur max, 10m de longueur cumulée), tandis que les piscines et leurs locaux techniques doivent respecter un retrait de 3m.",
+      "recommandation": "Il est fortement recommandé de consulter l'architecte coordonnateur du lotissement dès la phase d'esquisse pour s'assurer de la conformité du projet aux prescriptions architecturales et paysagères du CPAP, qui sont souvent plus détaillées et restrictives que le PLU. Une attention particulière doit être portée à l'intégration des volumes, au choix des matériaux et couleurs, et à la gestion des espaces extérieurs et du stationnement pour s'inscrire dans l'identité méditerranéenne et contemporaine souhaitée.",
+      "avertissement": "Cette analyse intègre le règlement PLU et le CPAP du lotissement lus par l'IA. Les règles du CPAP s'appliquent en priorité quand plus restrictives. Vérifiez avec le service urbanisme et l'architecte coordonnateur du lotissement avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        3.48583442,
+        43.60605819
+      ],
+      [
+        3.48592758,
+        43.60588798
+      ],
+      [
+        3.48564722,
+        43.60582661
+      ],
+      [
+        3.48562104,
+        43.6059814
+      ],
+      [
+        3.48531845,
+        43.60597079
+      ],
+      [
+        3.48531243,
+        43.60600653
+      ],
+      [
+        3.48567448,
+        43.60601922
+      ],
+      [
+        3.48573123,
+        43.60605235
+      ],
+      [
+        3.48583442,
+        43.60605819
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.606029554744545,
+        3.4858064031148173
+      ],
+      [
+        43.60590481284066,
+        3.4858746773393987
+      ],
+      [
+        43.60586274251367,
+        3.4856824851139665
+      ],
+      [
+        43.60599174796142,
+        3.4856606661164715
+      ],
+      [
+        43.6059928136828,
+        3.4856910715085374
+      ],
+      [
+        43.60602627107916,
+        3.485748382321792
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.606014461758,
+        3.485858353511692
+      ],
+      [
+        43.60593026863449,
+        3.485904434419902
+      ],
+      [
+        43.60587227451685,
+        3.4856394966519093
+      ],
+      [
+        43.6059724203783,
+        3.4856225587447254
+      ],
+      [
+        43.60597520947134,
+        3.4857021325142243
+      ],
+      [
+        43.606008885131935,
+        3.4857598172029927
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60597622245114,
+            3.4853175349648593
+          ],
+          [
+            43.60599931297054,
+            3.485313645627234
+          ],
+          [
+            43.60600986248418,
+            3.4854330976961143
+          ],
+          [
+            43.60598677196478,
+            3.48543698703374
+          ],
+          [
+            43.60597622245114,
+            3.4853175349648593
+          ]
+        ]
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60595118836891,
+            3.485625873718142
+          ],
+          [
+            43.605955010341276,
+            3.4856689723467995
+          ],
+          [
+            43.605884347213234,
+            3.4856811538416204
+          ],
+          [
+            43.605880632358534,
+            3.485638083070312
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 73,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.60595531551863,
+            3.4856681189993344
+          ],
+          [
+            43.605966475526884,
+            3.4857815676027664
+          ],
+          [
+            43.60589170262147,
+            3.4857896384997296
+          ],
+          [
+            43.605884347213234,
+            3.4856811538416204
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-19T08:02:40.507Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "542 Chemin des Condamines 34800 Canet",
+    "commune": "",
+    "parcelRef": "34051 AI 0334",
+    "parcelSurface": 539,
+    "projectTypeLabel": "Construction neuve",
+    "existingM2": 0,
+    "drawnM2": 93,
+    "totalM2": 93,
+    "empriseP": 17,
+    "drawnShapes": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 27,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 66,
+        "niveaux": "r1"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 269.5,
+      "empriseNonReglementee": false,
+      "hauteurMax": 8.5,
+      "parkingNombrePlaces": 2,
+      "resume": "Le projet de construction neuve (maison individuelle) est situé en zone Ub du PLU de Canet et est soumis aux prescriptions d'un CPAP de lotissement. Les règles les plus restrictives entre le PLU et le CPAP ont été retenues. La zone Ub est une zone urbaine récente à dominante d'habitat résidentiel pavillonnaire. Le CPAP impose une typologie d'habitat individuel non jumelé et un seul logement par lot. L'emprise au sol est limitée à 50% de la parcelle, et 50% d'espaces libres en pleine terre sont exigés. Les retraits sont de 5m en façade et 3m en limites séparatives. La hauteur maximale est de 8,50m. Deux places de stationnement non closes sont requises par logement. Des prescriptions architecturales détaillées du CPAP s'appliquent, notamment l'interdiction de certains éléments décoratifs et l'obligation d'intégrer les éléments techniques.",
+      "recommandation": "Il est fortement recommandé de consulter l'Architecte Coordonnateur du lotissement avant tout projet pour s'assurer de la conformité aux prescriptions architecturales et paysagères du CPAP, qui sont souvent plus détaillées et restrictives que le PLU. Une attention particulière doit être portée à la gestion des eaux pluviales et à l'intégration paysagère des constructions et aménagements.",
+      "avertissement": "Cette analyse intègre le règlement PLU et le CPAP du lotissement lus par l'IA. Les règles du CPAP s'appliquent en priorité quand plus restrictives. Vérifiez avec le service urbanisme et l'architecte coordonnateur du lotissement avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        3.48583442,
+        43.60605819
+      ],
+      [
+        3.48592758,
+        43.60588798
+      ],
+      [
+        3.48564722,
+        43.60582661
+      ],
+      [
+        3.48562104,
+        43.6059814
+      ],
+      [
+        3.48531845,
+        43.60597079
+      ],
+      [
+        3.48531243,
+        43.60600653
+      ],
+      [
+        3.48567448,
+        43.60601922
+      ],
+      [
+        3.48573123,
+        43.60605235
+      ],
+      [
+        3.48583442,
+        43.60605819
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.606029554744545,
+        3.4858064031148173
+      ],
+      [
+        43.60590481284066,
+        3.4858746773393987
+      ],
+      [
+        43.60586274251367,
+        3.4856824851139665
+      ],
+      [
+        43.60599174796142,
+        3.4856606661164715
+      ],
+      [
+        43.6059928136828,
+        3.4856910715085374
+      ],
+      [
+        43.60602627107916,
+        3.485748382321792
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.606014461758,
+        3.485858353511692
+      ],
+      [
+        43.60593026863449,
+        3.485904434419902
+      ],
+      [
+        43.60587227451685,
+        3.4856394966519093
+      ],
+      [
+        43.6059724203783,
+        3.4856225587447254
+      ],
+      [
+        43.60597520947134,
+        3.4857021325142243
+      ],
+      [
+        43.606008885131935,
+        3.4857598172029927
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.605977538710896,
+            3.4853173132557473
+          ],
+          [
+            43.605999312970916,
+            3.4853136456271714
+          ],
+          [
+            43.606009862484285,
+            3.4854330976991816
+          ],
+          [
+            43.605988088224265,
+            3.4854367653277576
+          ],
+          [
+            43.605977538710896,
+            3.4853173132557473
+          ]
+        ]
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 27,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.605966159278665,
+            3.4856236176993627
+          ],
+          [
+            43.60597084204919,
+            3.485664319883911
+          ],
+          [
+            43.60589951010321,
+            3.485676384419292
+          ],
+          [
+            43.6058948273339,
+            3.485635682240445
+          ],
+          [
+            43.605966159278665,
+            3.4856236176993627
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 66,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.60597084204919,
+            3.485664319883911
+          ],
+          [
+            43.605983383661,
+            3.4857625470546063
+          ],
+          [
+            43.60591261055532,
+            3.4857797811459377
+          ],
+          [
+            43.60589951010321,
+            3.485676384419292
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-19T08:11:53.027Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "542 Chemin des Condamines 34800 Canet",
+    "commune": "",
+    "parcelRef": "34051 AI 0334",
+    "parcelSurface": 539,
+    "projectTypeLabel": "Construction neuve",
+    "existingM2": 0,
+    "drawnM2": 93,
+    "totalM2": 93,
+    "empriseP": 17,
+    "drawnShapes": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 27,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 66,
+        "niveaux": "r1"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 269.5,
+      "empriseNonReglementee": false,
+      "hauteurMax": 8.5,
+      "parkingNombrePlaces": 2,
+      "resume": "Le projet de construction neuve (maison individuelle) est situé en zone Ub du PLU de Canet et est soumis aux prescriptions d'un CPAP de lotissement. Les règles les plus restrictives entre le PLU et le CPAP ont été retenues. La zone Ub est une zone urbaine récente à dominante d'habitat résidentiel pavillonnaire. Le CPAP impose une typologie d'habitat individuel non jumelé et un seul logement par lot. L'emprise au sol est limitée à 50% de la parcelle, et 50% d'espaces libres en pleine terre sont exigés. Les retraits sont de 5m en façade et 3m en limites séparatives. La hauteur maximale est de 8,50m. Deux places de stationnement non closes sont requises par logement. Des prescriptions architecturales détaillées du CPAP s'appliquent, notamment l'interdiction de certains éléments décoratifs et l'obligation d'intégrer les éléments techniques.",
+      "recommandation": "Il est fortement recommandé de consulter l'Architecte Coordonnateur du lotissement avant tout projet pour s'assurer de la conformité aux prescriptions architecturales et paysagères du CPAP, qui sont souvent plus détaillées et restrictives que le PLU. Une attention particulière doit être portée à la gestion des eaux pluviales et à l'intégration paysagère des constructions et aménagements.",
+      "avertissement": "Cette analyse intègre le règlement PLU et le CPAP du lotissement lus par l'IA. Les règles du CPAP s'appliquent en priorité quand plus restrictives. Vérifiez avec le service urbanisme et l'architecte coordonnateur du lotissement avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        3.48583442,
+        43.60605819
+      ],
+      [
+        3.48592758,
+        43.60588798
+      ],
+      [
+        3.48564722,
+        43.60582661
+      ],
+      [
+        3.48562104,
+        43.6059814
+      ],
+      [
+        3.48531845,
+        43.60597079
+      ],
+      [
+        3.48531243,
+        43.60600653
+      ],
+      [
+        3.48567448,
+        43.60601922
+      ],
+      [
+        3.48573123,
+        43.60605235
+      ],
+      [
+        3.48583442,
+        43.60605819
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.606029554744545,
+        3.4858064031148173
+      ],
+      [
+        43.60590481284066,
+        3.4858746773393987
+      ],
+      [
+        43.60586274251367,
+        3.4856824851139665
+      ],
+      [
+        43.60599174796142,
+        3.4856606661164715
+      ],
+      [
+        43.6059928136828,
+        3.4856910715085374
+      ],
+      [
+        43.60602627107916,
+        3.485748382321792
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.606014461758,
+        3.485858353511692
+      ],
+      [
+        43.60593026863449,
+        3.485904434419902
+      ],
+      [
+        43.60587227451685,
+        3.4856394966519093
+      ],
+      [
+        43.6059724203783,
+        3.4856225587447254
+      ],
+      [
+        43.60597520947134,
+        3.4857021325142243
+      ],
+      [
+        43.606008885131935,
+        3.4857598172029927
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.605977538710896,
+            3.4853173132557473
+          ],
+          [
+            43.605999312970916,
+            3.4853136456271714
+          ],
+          [
+            43.606009862484285,
+            3.4854330976991816
+          ],
+          [
+            43.605988088224265,
+            3.4854367653277576
+          ],
+          [
+            43.605977538710896,
+            3.4853173132557473
+          ]
+        ]
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 27,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.605966159278665,
+            3.4856236176993627
+          ],
+          [
+            43.60597084204919,
+            3.485664319883911
+          ],
+          [
+            43.60589951010321,
+            3.485676384419292
+          ],
+          [
+            43.6058948273339,
+            3.485635682240445
+          ],
+          [
+            43.605966159278665,
+            3.4856236176993627
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 66,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.60597084204919,
+            3.485664319883911
+          ],
+          [
+            43.605983383661,
+            3.4857625470546063
+          ],
+          [
+            43.60591261055532,
+            3.4857797811459377
+          ],
+          [
+            43.60589951010321,
+            3.485676384419292
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-19T08:16:29.379Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "542 Chemin des Condamines 34800 Canet",
+    "commune": "",
+    "parcelRef": "34051 AI 0334",
+    "parcelSurface": 539,
+    "projectTypeLabel": "Construction neuve",
+    "existingM2": 0,
+    "drawnM2": 90,
+    "totalM2": 90,
+    "empriseP": 17,
+    "drawnShapes": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 62,
+        "niveaux": "r1"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 269.5,
+      "empriseNonReglementee": false,
+      "hauteurMax": 8.5,
+      "parkingNombrePlaces": 2,
+      "resume": "Le projet de construction neuve (maison individuelle) dans la zone Ub de Canet est soumis aux règles du PLU et aux prescriptions du CPAP du lotissement. Le CPAP est plus restrictif sur plusieurs points, notamment l'emprise au sol maximale (50% de la parcelle), le pourcentage d'espaces libres (50% minimum), les débords de toiture (30-50cm), l'interdiction de certains éléments architecturaux (génoises, arcades), et des règles strictes sur les couleurs et matériaux. Un seul logement est autorisé par lot. Le terrain est également concerné par des risques d'inondation (PPRNi), de retrait-gonflement des argiles et de feu de forêt, nécessitant des mesures constructives spécifiques.",
+      "recommandation": "Il est fortement recommandé de consulter l'Architecte Coordonnateur du lotissement dès la phase d'esquisse pour s'assurer de la conformité du projet aux prescriptions architecturales et paysagères du CPAP, qui sont souvent plus restrictives que le PLU. Une attention particulière doit être portée à l'intégration paysagère, au choix des matériaux et des couleurs, ainsi qu'à la gestion des eaux pluviales et des risques naturels.",
+      "avertissement": "Cette analyse intègre le règlement PLU et le CPAP du lotissement lus par l'IA. Les règles du CPAP s'appliquent en priorité quand plus restrictives. Vérifiez avec le service urbanisme et l'architecte coordonnateur du lotissement avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        3.48583442,
+        43.60605819
+      ],
+      [
+        3.48592758,
+        43.60588798
+      ],
+      [
+        3.48564722,
+        43.60582661
+      ],
+      [
+        3.48562104,
+        43.6059814
+      ],
+      [
+        3.48531845,
+        43.60597079
+      ],
+      [
+        3.48531243,
+        43.60600653
+      ],
+      [
+        3.48567448,
+        43.60601922
+      ],
+      [
+        3.48573123,
+        43.60605235
+      ],
+      [
+        3.48583442,
+        43.60605819
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.606029554744545,
+        3.4858064031148173
+      ],
+      [
+        43.60590481284066,
+        3.4858746773393987
+      ],
+      [
+        43.60586274251367,
+        3.4856824851139665
+      ],
+      [
+        43.60599174796142,
+        3.4856606661164715
+      ],
+      [
+        43.6059928136828,
+        3.4856910715085374
+      ],
+      [
+        43.60602627107916,
+        3.485748382321792
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.606014461758,
+        3.485858353511692
+      ],
+      [
+        43.60593026863449,
+        3.485904434419902
+      ],
+      [
+        43.60587227451685,
+        3.4856394966519093
+      ],
+      [
+        43.6059724203783,
+        3.4856225587447254
+      ],
+      [
+        43.60597520947134,
+        3.4857021325142243
+      ],
+      [
+        43.606008885131935,
+        3.4857598172029927
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60597580984241,
+            3.4853176044641487
+          ],
+          [
+            43.60599931297036,
+            3.485313645627264
+          ],
+          [
+            43.60600986248413,
+            3.485433097694652
+          ],
+          [
+            43.60598635935617,
+            3.4854370565315365
+          ],
+          [
+            43.60597580984241,
+            3.4853176044641487
+          ]
+        ]
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60596300334317,
+            3.4856241969725192
+          ],
+          [
+            43.605966825314646,
+            3.485667295608966
+          ],
+          [
+            43.60589549336882,
+            3.4856793601453884
+          ],
+          [
+            43.6058916713928,
+            3.4856362615580787
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 62,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.605966825314646,
+            3.485667295608966
+          ],
+          [
+            43.60597634944322,
+            3.485764658210996
+          ],
+          [
+            43.605904758016834,
+            3.4857733081748954
+          ],
+          [
+            43.60589549336882,
+            3.4856793601453884
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-19T08:24:36.276Z"
+  },
+  {
+    "prenom": "elio",
+    "nom": "giagga",
+    "email": "elio.giagga@gmail.com",
+    "adresseProjet": "542 Chemin des Condamines 34800 Canet",
+    "commune": "",
+    "parcelRef": "34051 AI 0334",
+    "parcelSurface": 539,
+    "projectTypeLabel": "Construction neuve",
+    "existingM2": 0,
+    "drawnM2": 90,
+    "totalM2": 90,
+    "empriseP": 17,
+    "drawnShapes": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe"
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 62,
+        "niveaux": "r1"
+      }
+    ],
+    "aiAnalysis": {
+      "retraitVoie": 5,
+      "retraitLateral": 3,
+      "retraitFond": 3,
+      "empriseMax": 269.5,
+      "empriseNonReglementee": false,
+      "hauteurMax": 8.5,
+      "parkingNombrePlaces": 2,
+      "resume": "Le projet de construction neuve (maison individuelle) dans la zone Ub de Canet est soumis aux règles du PLU et aux prescriptions du CPAP du lotissement. Le CPAP est plus restrictif sur plusieurs points, notamment l'emprise au sol maximale (50% de la parcelle), le pourcentage d'espaces libres (50% minimum), les débords de toiture (30-50cm), l'interdiction de certains éléments architecturaux (génoises, arcades), et des règles strictes sur les couleurs et matériaux. Un seul logement est autorisé par lot. Le terrain est également concerné par des risques d'inondation (PPRNi), de retrait-gonflement des argiles et de feu de forêt, nécessitant des mesures constructives spécifiques.",
+      "recommandation": "Il est fortement recommandé de consulter l'Architecte Coordonnateur du lotissement dès la phase d'esquisse pour s'assurer de la conformité du projet aux prescriptions architecturales et paysagères du CPAP, qui sont souvent plus restrictives que le PLU. Une attention particulière doit être portée à l'intégration paysagère, au choix des matériaux et des couleurs, ainsi qu'à la gestion des eaux pluviales et des risques naturels.",
+      "avertissement": "Cette analyse intègre le règlement PLU et le CPAP du lotissement lus par l'IA. Les règles du CPAP s'appliquent en priorité quand plus restrictives. Vérifiez avec le service urbanisme et l'architecte coordonnateur du lotissement avant tout dépôt de dossier."
+    },
+    "parcelRing": [
+      [
+        3.48583442,
+        43.60605819
+      ],
+      [
+        3.48592758,
+        43.60588798
+      ],
+      [
+        3.48564722,
+        43.60582661
+      ],
+      [
+        3.48562104,
+        43.6059814
+      ],
+      [
+        3.48531845,
+        43.60597079
+      ],
+      [
+        3.48531243,
+        43.60600653
+      ],
+      [
+        3.48567448,
+        43.60601922
+      ],
+      [
+        3.48573123,
+        43.60605235
+      ],
+      [
+        3.48583442,
+        43.60605819
+      ]
+    ],
+    "zoneMain": [
+      [
+        43.606029554744545,
+        3.4858064031148173
+      ],
+      [
+        43.60590481284066,
+        3.4858746773393987
+      ],
+      [
+        43.60586274251367,
+        3.4856824851139665
+      ],
+      [
+        43.60599174796142,
+        3.4856606661164715
+      ],
+      [
+        43.6059928136828,
+        3.4856910715085374
+      ],
+      [
+        43.60602627107916,
+        3.485748382321792
+      ]
+    ],
+    "zoneAnnex": [
+      [
+        43.606014461758,
+        3.485858353511692
+      ],
+      [
+        43.60593026863449,
+        3.485904434419902
+      ],
+      [
+        43.60587227451685,
+        3.4856394966519093
+      ],
+      [
+        43.6059724203783,
+        3.4856225587447254
+      ],
+      [
+        43.60597520947134,
+        3.4857021325142243
+      ],
+      [
+        43.606008885131935,
+        3.4857598172029927
+      ]
+    ],
+    "drawnShapesWithCoords": [
+      {
+        "label": "🅿 2 enfilade",
+        "type": "autre",
+        "surfaceM2": 30,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60597580984241,
+            3.4853176044641487
+          ],
+          [
+            43.60599931297036,
+            3.485313645627264
+          ],
+          [
+            43.60600986248413,
+            3.485433097694652
+          ],
+          [
+            43.60598635935617,
+            3.4854370565315365
+          ],
+          [
+            43.60597580984241,
+            3.4853176044641487
+          ]
+        ]
+      },
+      {
+        "label": "Garage",
+        "type": "garage",
+        "surfaceM2": 28,
+        "niveaux": "annexe",
+        "polygon": [
+          [
+            43.60596300334317,
+            3.4856241969725192
+          ],
+          [
+            43.605966825314646,
+            3.485667295608966
+          ],
+          [
+            43.60589549336882,
+            3.4856793601453884
+          ],
+          [
+            43.6058916713928,
+            3.4856362615580787
+          ]
+        ]
+      },
+      {
+        "label": "R+1",
+        "type": "batiment",
+        "surfaceM2": 62,
+        "niveaux": "r1",
+        "polygon": [
+          [
+            43.605966825314646,
+            3.485667295608966
+          ],
+          [
+            43.60597634944322,
+            3.485764658210996
+          ],
+          [
+            43.605904758016834,
+            3.4857733081748954
+          ],
+          [
+            43.60589549336882,
+            3.4856793601453884
+          ]
+        ]
+      }
+    ],
+    "createdAt": "2026-05-19T08:28:54.727Z"
+  }
+]
