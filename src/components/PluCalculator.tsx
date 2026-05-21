@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
 import type { LotPolygon, AccessPoint, Building, DrawnShape, ManualMeasure } from "./MapPicker";
 import { SHAPE_LABELS, SHAPE_DOT_CLS, NIVEAUX_DOT_CLS } from "./shapeConstants";
-import PdfModal from "./PdfModal";
 import { computeOffsetPoly, classifyEdgeSetbacks } from "@/lib/zoneUtils";
 
 // Tailwind classes pour les types de forme et niveaux (statiques pour que Tailwind les inclue)
@@ -1715,8 +1714,6 @@ function buildParkingPolygon(
 
 export default function PluCalculator() {
   const [step, setStep] = useState<Step>(1);
-  const [showPdfModal, setShowPdfModal] = useState(false);
-
   // Carte : centre sur la France au départ
   const [mapCenter, setMapCenter] = useState<[number, number]>([46.5, 2.0]);
   const [mapZoom, setMapZoom] = useState(6);
@@ -4064,84 +4061,11 @@ export default function PluCalculator() {
                 setProjectSurfaceM2(""); setProjectDescriptionLibre("");
                 setDrawnShapes([]); setDrawMode(false); setEditMode(null); setShowCotesStep4(false);
                 setMeasureMode(false); setManualMeasures([]); setShowZoneConstructible(false);
-                setShowPdfModal(false);
               }}
                 className="border border-warm-gray text-anthracite text-xs font-semibold tracking-[0.2em] uppercase px-6 py-3 hover:bg-warm-gray/40 transition-colors">
                 Nouvelle analyse
               </button>
-              <button
-                type="button"
-                onClick={() => setShowPdfModal(true)}
-                className="bg-terracotta text-white text-xs font-semibold tracking-[0.2em] uppercase px-6 py-3 hover:bg-terracotta-dark transition-colors"
-              >
-                Recevoir en PDF →
-              </button>
             </div>
-            {(() => {
-              const parcelRingForPdf = (() => {
-                const g = selectedFeature?.geometry;
-                if (!g) return undefined;
-                if (g.type === "Polygon") return (g.coordinates as [number, number][][])[0];
-                if (g.type === "MultiPolygon") return (g.coordinates as [number, number][][][])[0][0];
-                return undefined;
-              })();
-              const zoneMainForPdf = parcelRingForPdf && aiAnalysis
-                ? computeOffsetPoly(parcelRingForPdf, Array(parcelRingForPdf.length - 1).fill(aiAnalysis.retraitLateral))
-                : null;
-              const zoneAnnexForPdf = parcelRingForPdf && aiAnalysis && (aiAnalysis.annexesEnLimite?.length ?? 0) > 0
-                ? computeOffsetPoly(parcelRingForPdf, classifyEdgeSetbacks(parcelRingForPdf, accessPoint, aiAnalysis.retraitVoie, 0, 0))
-                : null;
-              const empriseRdcM2ForPdf = drawnShapes.reduce((s, sh) => {
-                if (sh.nonEmprise) return s;
-                if (sh.niveaux !== "r1" && sh.niveaux !== "r2") return s + sh.surfaceM2;
-                return s + calcUpperFloorUncoveredM2(sh, existingBuildings, drawnShapes);
-              }, 0);
-              const existM2ForPdf = existingBuildings.reduce((s, b) => s + b.footprintM2, 0);
-              const totalM2ForPdf = existM2ForPdf + empriseRdcM2ForPdf;
-              return (
-                <PdfModal
-                  open={showPdfModal}
-                  onClose={() => setShowPdfModal(false)}
-                  adresseProjet={address}
-                  commune={commune}
-                  parcelRef={parcel.ref ?? ""}
-                  parcelSurface={parcel.surface ?? 0}
-                  projectTypeLabel={PROJECT_TYPES.find((p) => p.key === projectType)?.label ?? ""}
-                  existingM2={existM2ForPdf}
-                  drawnM2={empriseRdcM2ForPdf}
-                  totalM2={totalM2ForPdf}
-                  empriseP={Math.round(totalM2ForPdf / (parcel.surface ?? 1) * 100)}
-                  drawnShapes={drawnShapes.map((s) => ({
-                    label: s.label,
-                    type: s.type,
-                    surfaceM2: s.surfaceM2,
-                    niveaux: s.niveaux,
-                  }))}
-                  aiAnalysis={aiAnalysis ? {
-                    retraitVoie: aiAnalysis.retraitVoie,
-                    retraitLateral: aiAnalysis.retraitLateral,
-                    retraitFond: aiAnalysis.retraitFond,
-                    empriseMax: aiAnalysis.empriseMax,
-                    empriseNonReglementee: aiAnalysis.empriseNonReglementee,
-                    hauteurMax: aiAnalysis.hauteurMax,
-                    parkingNombrePlaces: aiAnalysis.parkingNombrePlaces,
-                    resume: aiAnalysis.resume,
-                    recommandation: aiAnalysis.recommandation,
-                    avertissement: aiAnalysis.avertissement,
-                  } : null}
-                  parcelRing={parcelRingForPdf}
-                  zoneMain={zoneMainForPdf}
-                  zoneAnnex={zoneAnnexForPdf}
-                  drawnShapesWithCoords={drawnShapes.map((s) => ({
-                    label: s.label,
-                    type: s.type,
-                    surfaceM2: s.surfaceM2,
-                    niveaux: s.niveaux,
-                    polygon: s.polygon,
-                  }))}
-                />
-              );
-            })()}
           </div>
         );
       })() : null}
