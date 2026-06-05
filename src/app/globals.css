@@ -24,6 +24,175 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ── Plan de masse map ────────────────────────────────────────────── */
+
+.ol-map {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.ol-map .ol-control button {
+  background: #142018;
+  color: #a8bfaa;
+  border: 1px solid #2a3d2e;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.ol-map .ol-control button:hover {
+  background: #1c2e1f;
+  color: #e8f0e9;
+}
+
+/* Cotation labels */
+.cote-label {
+  background: #142018;
+  border: 1.5px solid #c4a35a;
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #c4a35a;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.cote-label.warning {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+/* Snap highlight */
+.snap-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #c4a35a;
+  border: 2px solid #e8f0e9;
+  box-shadow: 0 0 0 2px #c4a35a;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Distance label */
+.dist-label {
+  background: rgba(13, 26, 16, 0.92);
+  color: #c4a35a;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(196, 163, 90, 0.5);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+/* Snap type label */
+.snap-label {
+  background: rgba(13, 26, 16, 0.92);
+  color: #c4a35a;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(196, 163, 90, 0.4);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(12px, -20px);
+}
+
+/* Cotation éditable (mode Modifier) */
+.dim-overlay {
+  display: flex;
+  align-items: center;
+  background: rgba(13, 26, 16, 0.96);
+  border: 1px solid #c4a35a;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  white-space: nowrap;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: all;
+}
+
+.dim-arrow {
+  background: transparent;
+  border: none;
+  color: #c4a35a;
+  font-size: 7px;
+  padding: 2px 5px;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 0.1s;
+}
+
+.dim-arrow:hover { background: rgba(196,163,90,0.2); color: #d4b870; }
+
+.dim-value {
+  color: #a8bfaa;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: monospace;
+  padding: 2px 5px;
+  cursor: pointer;
+  border-left: 1px solid rgba(196,163,90,0.3);
+  border-right: 1px solid rgba(196,163,90,0.3);
+  transition: background 0.1s;
+}
+
+.dim-value:hover { background: rgba(196,163,90,0.12); color: #e8f0e9; }
+
+.dim-input {
+  width: 46px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #d4b870;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: monospace;
+  text-align: center;
+  padding: 2px 3px;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.dim-input::-webkit-outer-spin-button,
+.dim-input::-webkit-inner-spin-button { appearance: none; }
+
+.dim-mode-icon {
+  color: #c4a35a;
+  font-size: 8px;
+  padding: 2px 2px 2px 5px;
+}
+
+.dim-unit {
+  color: #5a7a5d;
+  font-size: 8px;
+  padding: 2px 5px 2px 1px;
+}
+
+/* Vertex markers */
+.vertex-marker {
+  width: 10px;
+  height: 10px;
+  background: #e8f0e9;
+  border: 2px solid #c4a35a;
+  border-radius: 2px;
+  cursor: grab;
+  transform: translate(-50%, -50%);
+}
+
+.vertex-marker:hover {
+  background: #c4a35a;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
