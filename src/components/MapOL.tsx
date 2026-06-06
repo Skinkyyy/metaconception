@@ -24,7 +24,7 @@ import type { PluRules, SnapConfig } from "@/lib/geo";
 import {
   computeSnap, buildCoteLines, areaM2, fmtDist,
   computeOffsetPoly, nearestEdgeDir, buildRotatedRect,
-  K_LAT, kLon, DEFAULT_SNAP_CONFIG,
+  K_LAT, kLon, DEFAULT_SNAP_CONFIG, removeNarrowCorridors,
 } from "@/lib/geo";
 
 // Classifie chaque arête : rv sur voirie, rl ou rf sinon
@@ -381,7 +381,7 @@ export default function MapOL({
           source: new XYZ({
             url: "https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=CADASTRALPARCELS.PARCELLAIRE_EXPRESS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/png",
             minZoom: 15,
-            maxZoom: 20,
+            maxZoom: 19,
           }),
           opacity: 0.5,
           minZoom: 15,
@@ -1086,14 +1086,16 @@ export default function MapOL({
       feat.setStyle(zoneStyle);
       zoneSourceRef.current.addFeature(feat);
     } else {
-      // Annexe / RDC en limite : retrait voirie uniquement, 0 sur latéraux et fond
+      // Annexe / RDC en limite : retrait 0 sur latéraux et fond, rvAnnexe côté voirie
+      // Morphological opening (érode+dilate 2m) pour supprimer les couloirs < 4 m
       const style = zoneMode === "annexe" ? zoneAnnexeStyle : zoneRdcStyle;
       const sbAnnex = accessPoint
         ? classifyEdgeSetbacks(selectedParcel.ring, accessPoint, rvAnnexe, 0, 0)
-        : Array(n).fill(rvAnnexe);
+        : Array(n).fill(0);
 
-      const annexZonePts = computeOffsetPoly(selectedParcel.ring, sbAnnex);
-      if (!annexZonePts) return;
+      const rawAnnexPts = computeOffsetPoly(selectedParcel.ring, sbAnnex);
+      if (!rawAnnexPts) return;
+      const annexZonePts = removeNarrowCorridors(rawAnnexPts, 4);
 
       const outerCoords = llArr2ol(annexZonePts);
       const feat = new Feature(new OLPolygon([[...outerCoords, outerCoords[0]]]));

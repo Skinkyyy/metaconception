@@ -40,14 +40,32 @@ interface Props {
   onPickAccess: () => void;
 }
 
-function RuleRow({ label, value, unit }: { label: string; value: number; unit: string }) {
+function RuleRow({
+  label, value, unit, onChange,
+}: {
+  label: string;
+  value: number;
+  unit: string;
+  onChange: (v: number) => void;
+}) {
   return (
     <div className="flex items-center justify-between gap-2">
       <span className="text-[#7a9a7d] text-xs flex-1 leading-tight">{label}</span>
-      <span className="text-[#e8f0e9] text-xs font-semibold tabular-nums">
-        {value % 1 === 0 ? value : value.toFixed(1)}
-        <span className="text-[#5a7a5d] font-normal ml-0.5">{unit}</span>
-      </span>
+      <div className="flex items-center gap-0.5">
+        <input
+          type="number"
+          min="0"
+          step="0.5"
+          value={value}
+          aria-label={label}
+          onChange={e => {
+            const v = parseFloat(e.target.value);
+            if (!isNaN(v) && v >= 0) onChange(v);
+          }}
+          className="w-12 bg-transparent text-[#e8f0e9] text-xs font-semibold tabular-nums text-right outline-none border-b border-transparent hover:border-[#2a3d2e] focus:border-[#c4a35a] transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+        />
+        <span className="text-[#5a7a5d] text-xs font-normal">{unit}</span>
+      </div>
     </div>
   );
 }
@@ -230,26 +248,29 @@ export default function PluPanel({
               ))}
             </div>
             {(zoneMode === "annexe" || zoneMode === "rdc") && (
-              <div className={`mt-1.5 text-[9px] leading-relaxed space-y-0.5 ${zoneMode === "annexe" ? "text-orange-400/80" : "text-purple-400/80"}`}>
-                <p>Retrait voirie : <span className="font-semibold">{rules.retraitVoirieAnnexe > 0 ? `${rules.retraitVoirieAnnexe} m` : `${rules.retraitVoirie} m (valeur principale)`}</span></p>
-                {rules.surfaceMaxAnnexe > 0 && <p>Surface max : <span className="font-semibold">{rules.surfaceMaxAnnexe} m²</span></p>}
-                {rules.longueurMaxAnnexe > 0 && <p>Longueur max : <span className="font-semibold">{rules.longueurMaxAnnexe} m</span></p>}
-                {rules.hauteurMaxAnnexe > 0 && <p>Hauteur max : <span className="font-semibold">{rules.hauteurMaxAnnexe} m</span></p>}
-                {!rules.surfaceMaxAnnexe && !rules.longueurMaxAnnexe && !rules.hauteurMaxAnnexe && (
-                  <p className="opacity-70">Analyser le PLU pour voir les conditions spécifiques.</p>
-                )}
+              <div className={`mt-1.5 text-[9px] ${zoneMode === "annexe" ? "text-orange-400/70" : "text-purple-400/70"}`}>
+                <p>Valeurs éditables dans le tableau ci-dessous.</p>
               </div>
             )}
           </div>
 
-          {/* Règles numériques — lecture seule */}
-          <div className="flex flex-col gap-2 mb-3 p-2.5 rounded bg-[#0a1209]/60 border border-[#2a3d2e]/60">
-            <RuleRow label="Emprise au sol max" value={rules.empriseMaxPct}   unit="%" />
-            <RuleRow label="Recul voirie"        value={rules.retraitVoirie}   unit=" m" />
-            <RuleRow label="Recul limites lat."  value={rules.retraitLateral}  unit=" m" />
-            <RuleRow label="Recul fond parcelle" value={rules.retraitFond}     unit=" m" />
-            <RuleRow label="Hauteur max"         value={rules.hauteurMax}      unit=" m" />
-            <RuleRow label="Espaces verts min"   value={rules.espacesVertsPct} unit="%" />
+          {/* Règles numériques — éditables */}
+          <div className="flex flex-col gap-1.5 mb-3 p-2.5 rounded bg-[#0a1209]/60 border border-[#2a3d2e]/60">
+            {/* Construction principale */}
+            <p className="text-[#4a6a4d] text-[9px] font-semibold tracking-widest uppercase mb-0.5">Construction principale</p>
+            <RuleRow label="Emprise au sol max"  value={rules.empriseMaxPct}   unit="%" onChange={v => onChange({ ...rules, empriseMaxPct:   v })} />
+            <RuleRow label="Recul voirie"         value={rules.retraitVoirie}   unit=" m" onChange={v => onChange({ ...rules, retraitVoirie:   v })} />
+            <RuleRow label="Recul limites lat."   value={rules.retraitLateral}  unit=" m" onChange={v => onChange({ ...rules, retraitLateral:  v })} />
+            <RuleRow label="Recul fond parcelle"  value={rules.retraitFond}     unit=" m" onChange={v => onChange({ ...rules, retraitFond:     v })} />
+            <RuleRow label="Hauteur max"          value={rules.hauteurMax}      unit=" m" onChange={v => onChange({ ...rules, hauteurMax:      v })} />
+            <RuleRow label="Espaces verts min"    value={rules.espacesVertsPct} unit="%" onChange={v => onChange({ ...rules, espacesVertsPct: v })} />
+            {/* Annexes / dépendances */}
+            <div className="border-t border-[#2a3d2e]/60 my-1" />
+            <p className="text-[#4a6a4d] text-[9px] font-semibold tracking-widest uppercase mb-0.5">Annexes / dépendances</p>
+            <RuleRow label="Hauteur max annexe"   value={rules.hauteurMaxAnnexe}    unit=" m" onChange={v => onChange({ ...rules, hauteurMaxAnnexe:    v })} />
+            <RuleRow label="Recul voirie annexe"  value={rules.retraitVoirieAnnexe} unit=" m" onChange={v => onChange({ ...rules, retraitVoirieAnnexe: v })} />
+            <RuleRow label="Surface max annexe"   value={rules.surfaceMaxAnnexe}    unit=" m²" onChange={v => onChange({ ...rules, surfaceMaxAnnexe:    v })} />
+            <RuleRow label="Longueur max annexe"  value={rules.longueurMaxAnnexe}   unit=" m" onChange={v => onChange({ ...rules, longueurMaxAnnexe:   v })} />
           </div>
 
           {/* Résumé */}

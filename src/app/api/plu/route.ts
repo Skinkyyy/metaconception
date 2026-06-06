@@ -222,19 +222,41 @@ Projet : construction neuve / plan de masse`;
       ? "Analyse basée sur le règlement PLU officiel (Géoportail de l'Urbanisme). Vérifiez avec le service urbanisme avant tout dépôt."
       : "Analyse estimée par IA (règlement PDF non disponible). Consultez le PLU officiel de votre mairie.";
 
+    const heightNote = `
+HAUTEURS ET DIMENSIONS ANNEXES — lecture experte obligatoire :
+Tu es experte en PLU, droit foncier et architecture. Tu dois lire chaque article en entier avant d'extraire une valeur. Une erreur de lecture peut avoir des conséquences réglementaires graves.
+
+- hauteurMax : hauteur maximale du bâtiment PRINCIPAL (habitation, bureau). Articles "hauteur" ou "gabarit" pour constructions principales. Valeur typique 6–12 m. JAMAIS la hauteur des annexes.
+
+- hauteurMaxAnnexe : hauteur maximale applicable aux annexes, dépendances, garages pouvant s'implanter en limite séparative ou à faible recul.
+  ATTENTION : un même article peut contenir PLUSIEURS seuils de hauteur selon des conditions :
+  • Certains PLU autorisent une annexe à 4 m (ou plus) en limite si certaines conditions sont remplies (profondeur minimale, etc.) → c'est ce seuil qui s'applique pour une construction fermée standard.
+  • Une hauteur plus basse (ex: 3 m) peut s'appliquer uniquement aux "constructions couvertes et non closes" (pergolas, abris ouverts) → ce cas particulier NE s'applique PAS aux annexes fermées.
+  → Retourne la hauteur maximale applicable aux ANNEXES FERMÉES (garage, abri de jardin clos). Si plusieurs seuils, prends le plus élevé autorisé pour une construction fermée standard. Si non précisé → 0.
+
+- surfaceMaxAnnexe : emprise au sol ou surface de plancher maximale pour UNE annexe (ex : "30 m²", "20 m²"). En m², 0 si non précisé.
+
+- longueurMaxAnnexe : longueur maximale cumulée ou dimension maximale d'une annexe le long des limites séparatives (ex : "10 m de longueur cumulée sur l'ensemble des limites"). En mètres, 0 si non précisé. Lis TOUT l'article — cette valeur peut être en fin de paragraphe.
+
+- retraitVoirieAnnexe : retrait minimal côté voirie pour les annexes (souvent différent du bâtiment principal, parfois 0 m "en limite de voirie"). 0 si identique au principal.
+
+Ne jamais confondre ces cinq champs entre eux. Chaque valeur doit venir d'une lecture précise du texte.`;
+
     const promptText = pluDoc
       ? `Tu es un expert en droit de l'urbanisme français.
 
-Le règlement PLU officiel est joint en PDF. Extrais les règles de la zone "${zoneLibelle}".
+Le règlement PLU officiel est joint en PDF. Lis-le attentivement et extrais les règles applicables à la zone "${zoneLibelle}".
 
 ${contextBlock}
 
 Instructions :
-- Extrais les valeurs numériques exactes (retraits, emprise en %, hauteur) depuis le document
+- Lis l'intégralité des articles de la zone "${zoneLibelle}" avant de répondre
+- Extrais les valeurs numériques exactes telles qu'écrites dans le document
 - empriseMaxPct : exprimé en pourcentage (ex: 40 pour CES=0.4 ou emprise=40%)
 - espacesVertsPct : % minimum d'espaces libres/plantés (0 si non précisé)
 - sourcePlu : true (PDF officiel analysé)
-- Le champ "avertissement" doit être exactement : "${avertissement}"${cpapNote}`
+- Le champ "avertissement" doit être exactement : "${avertissement}"
+${heightNote}${cpapNote}`
       : `Tu es un expert en droit de l'urbanisme français.
 
 Analyse les règles PLU pour ce projet :
@@ -245,7 +267,8 @@ Instructions :
 - Utilise tes connaissances des règles typiques de la zone "${zoneLibelle}"
 - empriseMaxPct : exprimé en pourcentage
 - sourcePlu : false (estimation, pas de PDF)
-- Le champ "avertissement" doit être exactement : "${avertissement}"${cpapNote}`;
+- Le champ "avertissement" doit être exactement : "${avertissement}"
+${heightNote}${cpapNote}`;
 
     const parts: Record<string, unknown>[] = [{ text: promptText }];
     if (pluDoc) parts.push({ inlineData: { mimeType: pluDoc.mimeType, data: pluDoc.base64 } });

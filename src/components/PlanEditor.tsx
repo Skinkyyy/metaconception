@@ -7,6 +7,7 @@ import type { PluRules } from "@/lib/geo";
 import {
   checkConformite, buildCoteLines, minDistToParcel, minDistToFondEdges, minDistToVoirieEdges, buildParkingPolygon,
   measureAccessWidth, areaM2, interiorAreaM2, rotatePoly, pointInRing, DEFAULT_SNAP_CONFIG,
+  K_LAT, kLon,
 } from "@/lib/geo";
 import type { SnapConfig } from "@/lib/geo";
 import { SHAPE_TYPE_CONFIG, SHAPE_TYPES_PALETTE } from "./shapeConstants";
@@ -120,14 +121,58 @@ export default function PlanEditor() {
     [shapes],
   );
 
+  const PRINCIPAL_TYPES = new Set<ShapeType>(["rdc", "r1", "r2", "autre"]);
+  const ANNEXE_TYPES    = new Set<ShapeType>(["annexe", "garage"]);
+
+  const hauteurPrincipalVal = useMemo(() => {
+    const p = shapes.filter(s => PRINCIPAL_TYPES.has(s.type));
+    return p.length > 0 ? Math.max(...p.map(s => s.hauteurFaitage)) : 0;
+  }, [shapes]);
+
+  const hauteurAnnexeVal = useMemo(() => {
+    const a = shapes.filter(s => ANNEXE_TYPES.has(s.type));
+    return a.length > 0 ? Math.max(...a.map(s => s.hauteurFaitage)) : 0;
+  }, [shapes]);
+
+  const surfaceAnnexeMaxVal = useMemo(() => {
+    const a = shapes.filter(s => ANNEXE_TYPES.has(s.type));
+    return a.length > 0 ? Math.max(...a.map(s => s.surfaceM2)) : 0;
+  }, [shapes]);
+
+  const longueurAnnexeMaxVal = useMemo(() => {
+    const a = shapes.filter(s => ANNEXE_TYPES.has(s.type));
+    if (a.length === 0) return 0;
+    let maxDim = 0;
+    for (const sh of a) {
+      const poly = sh.polygon;
+      const n = poly.length;
+      for (let i = 0; i < n; i++) {
+        const [lat1, lon1] = poly[i];
+        const [lat2, lon2] = poly[(i + 1) % n];
+        const dx = (lon2 - lon1) * kLon(lat1);
+        const dy = (lat2 - lat1) * K_LAT;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d > maxDim) maxDim = d;
+      }
+    }
+    return maxDim;
+  }, [shapes]);
+
+  // Pour l'affichage dans la sidebar (toutes formes)
   const hauteurMaxVal = useMemo(
     () => shapes.length > 0 ? Math.max(...shapes.map(s => s.hauteurFaitage)) : 0,
     [shapes],
   );
 
-  const { minSetback, minGabaritRatio, minSetbackFond, minSetbackVoirie } = useMemo(() => {
-    if (!parcel || shapes.length === 0) return { minSetback: Infinity, minGabaritRatio: Infinity, minSetbackFond: Infinity, minSetbackVoirie: Infinity };
-    let ms = Infinity, mg = Infinity, msf = Infinity, msv = Infinity;
+  // Types soumis au retrait voirie principal (rdc/r1/r2/autre)
+  const VOIRIE_PRINCIPAL_TYPES = new Set<ShapeType>(["rdc", "r1", "r2", "autre"]);
+  // Types soumis au retrait voirie annexe (règle retraitVoirieAnnexe)
+  const VOIRIE_ANNEXE_TYPES    = new Set<ShapeType>(["annexe"]);
+  // Garage et parking ouvrent sur la voirie — pas de check voirie
+
+  const { minSetback, minGabaritRatio, minSetbackFond, minSetbackVoirie, minSetbackVoirieAnnexe } = useMemo(() => {
+    if (!parcel || shapes.length === 0) return { minSetback: Infinity, minGabaritRatio: Infinity, minSetbackFond: Infinity, minSetbackVoirie: Infinity, minSetbackVoirieAnnexe: Infinity };
+    let ms = Infinity, mg = Infinity, msf = Infinity, msv = Infinity, msva = Infinity;
     for (const sh of shapes) {
       const cfg = SHAPE_TYPE_CONFIG[sh.type];
       if (cfg.appliqueRetraitLateral) {
@@ -138,11 +183,16 @@ export default function PlanEditor() {
           if (df < msf) msf = df;
         }
       }
-      if (cfg.appliqueRetraitVoirie && accessPoint) {
-        const dv = minDistToVoirieEdges(sh.polygon, parcel.ring, accessPoint);
-        if (dv < msv) msv = dv;
+      if (accessPoint) {
+        if (VOIRIE_PRINCIPAL_TYPES.has(sh.type)) {
+          const dv = minDistToVoirieEdges(sh.polygon, parcel.ring, accessPoint);
+          if (dv < msv) msv = dv;
+        }
+        if (VOIRIE_ANNEXE_TYPES.has(sh.type)) {
+          const dv = minDistToVoirieEdges(sh.polygon, parcel.ring, accessPoint);
+          if (dv < msva) msva = dv;
+        }
       }
-      // Gabarit H ≤ 2L : utilise les cotes visuelles (distance perpendiculaire par face)
       if (cfg.appliqueGabarit && sh.hauteurFaitage > 0) {
         const cotes = buildCoteLines(sh.polygon, parcel.ring);
         for (const c of cotes) {
@@ -151,16 +201,17 @@ export default function PlanEditor() {
         }
       }
     }
-    return { minSetback: ms, minGabaritRatio: mg, minSetbackFond: msf, minSetbackVoirie: msv };
+    return { minSetback: ms, minGabaritRatio: mg, minSetbackFond: msf, minSetbackVoirie: msv, minSetbackVoirieAnnexe: msva };
   }, [shapes, parcel, accessPoint]);
 
   const conformite = useMemo(() => {
     if (!parcel) return null;
     return checkConformite(
       parcel.surface, empriseSol, surfacePlancher,
-      hauteurMaxVal, minSetback, minGabaritRatio, pluRules, minSetbackFond,
+      hauteurPrincipalVal, hauteurAnnexeVal, surfaceAnnexeMaxVal, longueurAnnexeMaxVal,
+      minSetback, minGabaritRatio, pluRules, minSetbackFond,
     );
-  }, [parcel, empriseSol, surfacePlancher, hauteurMaxVal, minSetback, minGabaritRatio, pluRules, minSetbackFond]);
+  }, [parcel, empriseSol, surfacePlancher, hauteurPrincipalVal, hauteurAnnexeVal, surfaceAnnexeMaxVal, longueurAnnexeMaxVal, minSetback, minGabaritRatio, pluRules, minSetbackFond]);
 
   const parcelCenter = useMemo(() => {
     if (!parcel) return null;
@@ -559,14 +610,49 @@ export default function PlanEditor() {
                 </span>
               </span>
 
-              {/* Hauteur max */}
-              <span className="flex items-center gap-1 shrink-0">
-                <span className={`w-1.5 h-1.5 rounded-full ${conformite.hauteurMax.conforme ? "bg-green-500" : "bg-red-500"}`} />
-                <span className="text-[#5a7a5d] text-[10px]">Hauteur</span>
-                <span className={`text-[10px] font-semibold tabular-nums ${conformite.hauteurMax.conforme ? "text-green-400" : "text-red-400"}`}>
-                  {conformite.hauteurMax.valeur.toFixed(1)} m / {conformite.hauteurMax.max} m
+              {/* Hauteur bâtiment principal */}
+              {conformite.hauteurMax.valeur > 0 && (
+                <span className="flex items-center gap-1 shrink-0">
+                  <span className={`w-1.5 h-1.5 rounded-full ${conformite.hauteurMax.conforme ? "bg-green-500" : "bg-red-500"}`} />
+                  <span className="text-[#5a7a5d] text-[10px]">H. princ.</span>
+                  <span className={`text-[10px] font-semibold tabular-nums ${conformite.hauteurMax.conforme ? "text-green-400" : "text-red-400"}`}>
+                    {conformite.hauteurMax.valeur.toFixed(1)} m / {conformite.hauteurMax.max} m
+                  </span>
                 </span>
-              </span>
+              )}
+
+              {/* Hauteur annexe */}
+              {conformite.hauteurAnnexe.applique && (
+                <span className="flex items-center gap-1 shrink-0">
+                  <span className={`w-1.5 h-1.5 rounded-full ${conformite.hauteurAnnexe.conforme ? "bg-green-500" : "bg-red-500"}`} />
+                  <span className="text-[#5a7a5d] text-[10px]">H. annexe</span>
+                  <span className={`text-[10px] font-semibold tabular-nums ${conformite.hauteurAnnexe.conforme ? "text-green-400" : "text-red-400"}`}>
+                    {conformite.hauteurAnnexe.valeur.toFixed(1)} m / {conformite.hauteurAnnexe.max} m
+                  </span>
+                </span>
+              )}
+
+              {/* Surface annexe */}
+              {conformite.surfaceAnnexe.applique && (
+                <span className="flex items-center gap-1 shrink-0">
+                  <span className={`w-1.5 h-1.5 rounded-full ${conformite.surfaceAnnexe.conforme ? "bg-green-500" : "bg-red-500"}`} />
+                  <span className="text-[#5a7a5d] text-[10px]">Surf. annexe</span>
+                  <span className={`text-[10px] font-semibold tabular-nums ${conformite.surfaceAnnexe.conforme ? "text-green-400" : "text-red-400"}`}>
+                    {conformite.surfaceAnnexe.valeur.toFixed(0)} m² / {conformite.surfaceAnnexe.max} m²
+                  </span>
+                </span>
+              )}
+
+              {/* Longueur annexe */}
+              {conformite.longueurAnnexe.applique && (
+                <span className="flex items-center gap-1 shrink-0">
+                  <span className={`w-1.5 h-1.5 rounded-full ${conformite.longueurAnnexe.conforme ? "bg-green-500" : "bg-red-500"}`} />
+                  <span className="text-[#5a7a5d] text-[10px]">Long. annexe</span>
+                  <span className={`text-[10px] font-semibold tabular-nums ${conformite.longueurAnnexe.conforme ? "text-green-400" : "text-red-400"}`}>
+                    {conformite.longueurAnnexe.valeur.toFixed(1)} m / {conformite.longueurAnnexe.max} m
+                  </span>
+                </span>
+              )}
 
               {/* Gabarit */}
               {conformite.gabarit.applique && (
@@ -601,16 +687,32 @@ export default function PlanEditor() {
                 </span>
               )}
 
-              {/* Retrait voirie (annexes et autres formes avec appliqueRetraitVoirie) */}
+              {/* Retrait voirie — bâtiment principal */}
               {isFinite(minSetbackVoirie) && accessPoint && (
                 <span className="flex items-center gap-1 shrink-0">
                   <span className={`w-1.5 h-1.5 rounded-full ${minSetbackVoirie >= pluRules.retraitVoirie ? "bg-green-500" : "bg-red-500"}`} />
-                  <span className="text-[#5a7a5d] text-[10px]">Retrait voirie</span>
+                  <span className="text-[#5a7a5d] text-[10px]">Ret. voirie</span>
                   <span className={`text-[10px] font-semibold tabular-nums ${minSetbackVoirie >= pluRules.retraitVoirie ? "text-green-400" : "text-red-400"}`}>
                     {minSetbackVoirie.toFixed(1)} m / {pluRules.retraitVoirie} m
                   </span>
                 </span>
               )}
+
+              {/* Retrait voirie — annexe (règle spécifique retraitVoirieAnnexe) */}
+              {isFinite(minSetbackVoirieAnnexe) && accessPoint && (() => {
+                const rvA = pluRules.retraitVoirieAnnexe > 0 ? pluRules.retraitVoirieAnnexe : pluRules.retraitVoirie;
+                const enLimite = minSetbackVoirieAnnexe < 0.20;
+                const ok = enLimite || minSetbackVoirieAnnexe >= rvA;
+                return (
+                  <span className="flex items-center gap-1 shrink-0">
+                    <span className={`w-1.5 h-1.5 rounded-full ${ok ? "bg-green-500" : "bg-red-500"}`} />
+                    <span className="text-[#5a7a5d] text-[10px]">Ret. voirie ann.</span>
+                    <span className={`text-[10px] font-semibold tabular-nums ${ok ? "text-green-400" : "text-red-400"}`}>
+                      {enLimite ? "EN LIMITE" : `${minSetbackVoirieAnnexe.toFixed(1)} m / ${rvA} m`}
+                    </span>
+                  </span>
+                );
+              })()}
 
               {/* Espaces verts */}
               <span className="flex items-center gap-1 shrink-0">

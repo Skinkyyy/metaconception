@@ -84,12 +84,8 @@ export default function PluEntryClient() {
   return (
     <main className="min-h-screen bg-[#0d1a10] flex flex-col items-center justify-center px-4">
 
-      {/* Logo */}
+      {/* Titre */}
       <div className="mb-10 text-center">
-        <div className="flex items-center justify-center gap-3 mb-3">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-2026.svg" alt="metaplans" className="h-10 w-auto" />
-        </div>
         <p className="text-[#5a7a5d] text-sm">Plan de masse coté · Conformité PLU · Export PDF</p>
       </div>
 

@@ -643,6 +643,54 @@ export function computeZoneConstructible(
   return computeOffsetPoly(ring, Array(ring.length - 1).fill(retraitM));
 }
 
+// ── Suppression des couloirs étroits ─────────────────────────────────────────
+
+/**
+ * Morphological opening : érode puis dilate pour supprimer les appendices
+ * plus étroits que minWidthM (ex : allée privée de 4 m).
+ * poly : [lat, lon][] format app — retourne le même format.
+ */
+export function removeNarrowCorridors(
+  poly: [number, number][],
+  minWidthM = 4,
+): [number, number][] {
+  if (poly.length < 3) return poly;
+  const erodeM = minWidthM / 2 + 0.1;
+  try {
+    const turfPoly = appPolyToTurf(poly);
+    const eroded = turf.buffer(turfPoly, -erodeM, { units: "meters" });
+    if (!eroded) return poly;
+    let mainPoly: Feature<Polygon>;
+    if (eroded.geometry.type === "MultiPolygon") {
+      const coords = eroded.geometry.coordinates as number[][][][];
+      const largest = coords.reduce((a, b) =>
+        turf.area(turf.polygon(a)) >= turf.area(turf.polygon(b)) ? a : b,
+      );
+      mainPoly = turf.polygon(largest) as Feature<Polygon>;
+    } else {
+      mainPoly = eroded as Feature<Polygon>;
+    }
+    const dilated = turf.buffer(mainPoly, erodeM, { units: "meters" });
+    if (!dilated) return poly;
+    // Intersection avec le polygone original pour restaurer les coins nets
+    const clipped = turf.intersect(
+      turf.featureCollection([turfPoly, dilated as Feature<Polygon>]),
+    );
+    if (clipped && clipped.geometry.type === "Polygon") {
+      const result = turfPolyToApp(clipped as Feature<Polygon>);
+      return result.length >= 3 ? result : poly;
+    }
+    // Fallback : dilaté sans clip
+    if (dilated.geometry.type === "Polygon") {
+      const result = turfPolyToApp(dilated as Feature<Polygon>);
+      return result.length >= 3 ? result : poly;
+    }
+    return poly;
+  } catch {
+    return poly;
+  }
+}
+
 // ── Point dans polygone ───────────────────────────────────────────────────────
 
 /** Test si (lon, lat) est dans un anneau GeoJSON [lon, lat][]. */
@@ -797,7 +845,10 @@ export interface PluRules {
 export interface ConformiteResult {
   empriseSol:      { valeur: number; max: number; conforme: boolean };
   surfacePlancher: { valeur: number };
-  hauteurMax:      { valeur: number; max: number; conforme: boolean };
+  hauteurMax:      { valeur: number; max: number; conforme: boolean };              // bâtiment principal
+  hauteurAnnexe:   { valeur: number; max: number; conforme: boolean; applique: boolean }; // annexe/garage
+  surfaceAnnexe:   { valeur: number; max: number; conforme: boolean; applique: boolean }; // surface max annexe
+  longueurAnnexe:  { valeur: number; max: number; conforme: boolean; applique: boolean }; // longueur max annexe
   gabarit:         { conforme: boolean; ratioMin: number; applique: boolean };
   retraitMin:      { valeur: number; requis: number; conforme: boolean; applique: boolean; enLimite: boolean };
   retraitFond:     { valeur: number; requis: number; conforme: boolean; applique: boolean };
@@ -814,7 +865,10 @@ export function checkConformite(
   parcelSurface: number,
   empriseSol: number,
   surfacePlancher: number,
-  hauteurMax: number,
+  hauteurMax: number,          // hauteur max bâtiment principal (rdc/r1/r2/autre)
+  hauteurAnnexeVal: number,    // hauteur max annexe/garage
+  surfaceAnnexeVal: number,    // surface de la plus grande annexe/garage (m²)
+  longueurAnnexeVal: number,   // plus grande dimension d'une annexe/garage (m)
   minSetback: number,
   minGabaritRatio: number,
   rules: PluRules,
@@ -827,12 +881,11 @@ export function checkConformite(
   const gabApplique  = isFinite(minGabaritRatio);
   const fondApplique = isFinite(minSetbackFond) && rules.retraitFond !== rules.retraitLateral;
 
-  // En limite séparative : distance < 0.20 m → conforme (règle "0 m ou retrait min" du PLU français)
   const EN_LIMITE_SEUIL = 0.20;
   const enLimite = retApplique && minSetback < EN_LIMITE_SEUIL;
 
-  const emp  = { valeur: empriseVal, max: rules.empriseMaxPct,   conforme: empriseVal <= rules.empriseMaxPct };
-  const hMax = { valeur: hauteurMax, max: rules.hauteurMax,       conforme: hauteurMax <= rules.hauteurMax || hauteurMax === 0 };
+  const emp  = { valeur: empriseVal, max: rules.empriseMaxPct, conforme: empriseVal <= rules.empriseMaxPct };
+  const hMax = { valeur: hauteurMax, max: rules.hauteurMax,    conforme: hauteurMax <= rules.hauteurMax || hauteurMax === 0 };
   const gab  = { conforme: !gabApplique || minGabaritRatio >= 0.5, ratioMin: minGabaritRatio, applique: gabApplique };
   const ret  = { valeur: minSetback, requis: rules.retraitLateral,
                  conforme: !retApplique || enLimite || minSetback >= rules.retraitLateral,
@@ -840,17 +893,34 @@ export function checkConformite(
   const fond = { valeur: minSetbackFond, requis: rules.retraitFond,
                  conforme: !fondApplique || minSetbackFond >= rules.retraitFond,
                  applique: fondApplique };
-  const esp  = { valeur: espVerts,    min: rules.espacesVertsPct,   conforme: espVerts >= rules.espacesVertsPct };
+  const esp  = { valeur: espVerts, min: rules.espacesVertsPct, conforme: espVerts >= rules.espacesVertsPct };
+
+  // Annexe / garage : vérifications spécifiques (seulement si la règle PLU est renseignée)
+  const hAnnexeApplique = hauteurAnnexeVal > 0 && rules.hauteurMaxAnnexe > 0;
+  const sAnnexeApplique = surfaceAnnexeVal > 0 && rules.surfaceMaxAnnexe > 0;
+  const lAnnexeApplique = longueurAnnexeVal > 0 && rules.longueurMaxAnnexe > 0;
+  const hAnnexe = { valeur: hauteurAnnexeVal, max: rules.hauteurMaxAnnexe,
+                    conforme: !hAnnexeApplique || hauteurAnnexeVal <= rules.hauteurMaxAnnexe,
+                    applique: hAnnexeApplique };
+  const sAnnexe = { valeur: surfaceAnnexeVal, max: rules.surfaceMaxAnnexe,
+                    conforme: !sAnnexeApplique || surfaceAnnexeVal <= rules.surfaceMaxAnnexe,
+                    applique: sAnnexeApplique };
+  const lAnnexe = { valeur: longueurAnnexeVal, max: rules.longueurMaxAnnexe,
+                    conforme: !lAnnexeApplique || longueurAnnexeVal <= rules.longueurMaxAnnexe,
+                    applique: lAnnexeApplique };
 
   return {
     empriseSol: emp,
     surfacePlancher: { valeur: surfacePlancher },
     hauteurMax: hMax,
+    hauteurAnnexe: hAnnexe,
+    surfaceAnnexe: sAnnexe,
+    longueurAnnexe: lAnnexe,
     gabarit: gab,
     retraitMin: ret,
     retraitFond: fond,
     espacesVerts: esp,
-    global: emp.conforme && hMax.conforme && ret.conforme && fond.conforme && esp.conforme,
+    global: emp.conforme && hMax.conforme && hAnnexe.conforme && sAnnexe.conforme && lAnnexe.conforme && ret.conforme && fond.conforme && esp.conforme,
   };
 }
 
