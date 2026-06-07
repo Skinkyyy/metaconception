@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect, useRef } from "react";
+import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import type { PluRules } from "@/lib/geo";
@@ -13,7 +13,10 @@ import type { SnapConfig } from "@/lib/geo";
 import { SHAPE_TYPE_CONFIG, SHAPE_TYPES_PALETTE } from "./shapeConstants";
 import type { ShapeType } from "./shapeConstants";
 import PluPanel from "./PluPanel";
+import ExportLeadModal from "./ExportLeadModal";
+import { exportFaisabilite } from "@/lib/exportPdf";
 
+import type { MapOLRef, MapCapture } from "./MapOL";
 const MapOL = dynamic(() => import("./MapOL"), { ssr: false });
 
 export type ZoneMode = "standard" | "annexe" | "rdc";
@@ -55,6 +58,13 @@ const DEFAULT_PLU: PluRules = {
   surfaceMaxAnnexe:     0,
   longueurMaxAnnexe:    0,
   hauteurMaxAnnexe:     0,
+  aspectToiture:        "",
+  aspectTuiles:         "",
+  aspectMenuiseries:    "",
+  aspectClotures:       "",
+  aspectVegetaux:       "",
+  aspectPiscine:        "",
+  aspectTerrasses:      "",
 };
 
 export default function PlanEditor() {
@@ -80,7 +90,10 @@ export default function PlanEditor() {
   const [loadingBuildings, setLoadingBuildings]   = useState(false);
   const [snapConfig, setSnapConfig]       = useState<SnapConfig>(DEFAULT_SNAP_CONFIG);
   const [sidebarWidth, setSidebarWidth]   = useState(288);
+  const [exportingPdf, setExportingPdf]   = useState(false);
+  const [showLeadModal, setShowLeadModal] = useState(false);
   const resizingRef = useRef(false);
+  const mapOLRef = useRef<MapOLRef>(null);
 
   const handleResizeStart = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -373,6 +386,31 @@ export default function PlanEditor() {
     }));
   }, [selectedShapeId]);
 
+  const handleExportPdf = useCallback(async () => {
+    if (!parcel || !conformite || exportingPdf) return;
+    setExportingPdf(true);
+    try {
+      const mapCapture: MapCapture | null = await mapOLRef.current?.captureMap() ?? null;
+      await exportFaisabilite({
+        address,
+        parcelId: parcel.id,
+        parcelSurface: parcel.surface,
+        parcelRing: parcel.ring,
+        shapes,
+        conformite,
+        pluRules,
+        empriseSol,
+        surfacePlancher,
+        minSetbackVoirie,
+        minSetbackVoirieAnnexe,
+        accessPoint,
+        mapCapture,
+      });
+    } finally {
+      setExportingPdf(false);
+    }
+  }, [parcel, conformite, exportingPdf, address, shapes, pluRules, empriseSol, surfacePlancher, minSetbackVoirie, minSetbackVoirieAnnexe]);
+
   return (
     <div className="flex flex-col h-screen bg-[#0d1a10]">
 
@@ -397,6 +435,15 @@ export default function PlanEditor() {
           }`}
         >
           📏 Mesure
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowLeadModal(true)}
+          disabled={!parcel || !conformite || exportingPdf}
+          title={!parcel ? "Sélectionnez une parcelle" : !conformite ? "Dessinez des surfaces" : "Générer l'étude de faisabilité PDF"}
+          className="px-3 py-1 rounded text-xs font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-[#c4a35a] hover:text-[#e8f0e9] hover:bg-[#1c2e1f] bg-[#0d1a10]"
+        >
+          {exportingPdf ? "⏳ PDF…" : "📄 Étude PDF"}
         </button>
         <div className="w-px h-5 bg-[#3c342c]" />
         {parcel && (
@@ -556,6 +603,8 @@ export default function PlanEditor() {
         <div className="flex flex-col flex-1 overflow-hidden">
           <div className="flex-1 relative">
             <MapOL
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ref={mapOLRef as any}
               center={[lat, lon]}
               zoom={18}
               tool={tool}
@@ -916,6 +965,16 @@ export default function PlanEditor() {
           </div>
         </aside>
       </div>
+
+      {/* ── Modal coordonnées avant export PDF ───────────────────────────── */}
+      <ExportLeadModal
+        open={showLeadModal}
+        address={address}
+        parcelId={parcel?.id}
+        parcelSurface={parcel?.surface}
+        onClose={() => setShowLeadModal(false)}
+        onConfirm={handleExportPdf}
+      />
 
     </div>
   );

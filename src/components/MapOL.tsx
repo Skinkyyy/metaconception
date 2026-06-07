@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
 import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
@@ -25,70 +25,8 @@ import {
   computeSnap, buildCoteLines, areaM2, fmtDist,
   computeOffsetPoly, nearestEdgeDir, buildRotatedRect,
   K_LAT, kLon, DEFAULT_SNAP_CONFIG, removeNarrowCorridors,
+  classifyEdgeSetbacks,
 } from "@/lib/geo";
-
-// Classifie chaque arête : rv sur voirie, rl ou rf sinon
-function classifyEdgeSetbacks(
-  ring: [number, number][],
-  access: { lat: number; lon: number } | null,
-  rv: number, rl: number, rf: number,
-): number[] {
-  const n = ring.length - 1;
-  if (!access) return Array(n).fill(rl);
-
-  const avgLat = ring.reduce((s, [, lat]) => s + lat, 0) / n;
-  const kl = K_LAT * Math.cos((avgLat * Math.PI) / 180);
-
-  // Coordonnées métriques
-  const ax = access.lon * kl, ay = access.lat * K_LAT;
-  const cx = ring.reduce((s, [lon]) => s + lon * kl, 0) / n;
-  const cy = ring.reduce((s, [, lat]) => s + lat * K_LAT, 0) / n;
-
-  // Direction centre → accès (pour classer le fond)
-  const dacx = ax - cx, dacy = ay - cy;
-  const dacLen = Math.sqrt(dacx * dacx + dacy * dacy);
-  if (dacLen < 0.01) return Array(n).fill(rl);
-  const anx = dacx / dacLen, any = dacy / dacLen;
-
-  const edges = Array.from({ length: n }, (_, i) => {
-    const [lon1, lat1] = ring[i], [lon2, lat2] = ring[(i + 1) % n];
-    const x1 = lon1 * kl, y1 = lat1 * K_LAT, x2 = lon2 * kl, y2 = lat2 * K_LAT;
-    const dx = x2 - x1, dy = y2 - y1;
-    const len = Math.sqrt(dx * dx + dy * dy);
-    if (len < 0.01) return { dist: Infinity, dot: 0 };
-
-    // Normale sortante (pointe vers l'extérieur de la parcelle)
-    let nx = -dy / len, ny = dx / len;
-    const midx = (x1 + x2) / 2, midy = (y1 + y2) / 2;
-    if (nx * (cx - midx) + ny * (cy - midy) > 0) { nx = -nx; ny = -ny; }
-
-    // Produit scalaire : normale · direction accès (pour fond uniquement)
-    const dot = nx * anx + ny * any;
-
-    // Distance du point d'accès au segment (en mètres approx)
-    const len2 = len * len;
-    const t = Math.max(0, Math.min(1, ((ax - x1) * dx + (ay - y1) * dy) / len2));
-    const px = x1 + t * dx, py = y1 + t * dy;
-    const dist = Math.sqrt((ax - px) ** 2 + (ay - py) ** 2);
-
-    return { dist, dot };
-  });
-
-  // Voirie : l'arête (ou les arêtes, pour un terrain d'angle) la plus proche du point d'accès.
-  // Tolérance = 0.20 × minDist + 0.8 m : permet d'inclure les deux arêtes d'un coin
-  // quand l'accès est posé près du coin, sans jamais en classer deux sur une parcelle standard.
-  const minDist = Math.min(...edges.map(e => e.dist));
-  const vTol = minDist * 0.20 + 0.8;
-
-  // Fond : arête avec le dot le plus négatif (côté opposé à l'accès)
-  const minDot = Math.min(...edges.map(e => e.dot));
-
-  return edges.map(({ dist, dot }) => {
-    if (dist <= minDist + vTol) return rv;                   // voirie — arête(s) la plus proche du point d'accès
-    if (dot <= minDot + 0.15 && dot < -0.30) return rf;     // fond — arête opposée à l'accès
-    return rl;                                                // latéral
-  });
-}
 import type { DrawnShape, ParcelInfo, ZoneMode, Building } from "./PlanEditor";
 import { SHAPE_TYPE_CONFIG } from "./shapeConstants";
 import type { ShapeType } from "./shapeConstants";
@@ -201,6 +139,18 @@ const snapDotStyle = new Style({
   }),
 });
 
+// ── Styles mesure ─────────────────────────────────────────────────────────────
+import type { FeatureLike } from "ol/Feature";
+function measureStyleFn(feature: FeatureLike): Style {
+  const geom = feature.getGeometry();
+  if (geom instanceof OLPoint) {
+    return new Style({
+      image: new CircleStyle({ radius: 4, fill: new Fill({ color: "#00cfff" }), stroke: new Stroke({ color: "#fff", width: 1.5 }) }),
+    });
+  }
+  return new Style({ stroke: new Stroke({ color: "#00cfff", width: 2, lineDash: [6, 3] }) });
+}
+
 // ── WFS parcel fetch ──────────────────────────────────────────────────────────
 
 async function fetchParcels(lat: number, lon: number): Promise<Feature[]> {
@@ -227,6 +177,17 @@ function extractRing(geometry: { type: string; coordinates: unknown }): [number,
     return ((geometry.coordinates as [number, number][][][])[0]?.[0]) ?? null;
   }
   return null;
+}
+
+// ── Ref exposed to parent ─────────────────────────────────────────────────────
+
+export interface MapCapture {
+  dataUrl: string;
+  extent: [number, number, number, number]; // [minLon, minLat, maxLon, maxLat]
+}
+
+export interface MapOLRef {
+  captureMap: () => Promise<MapCapture | null>;
 }
 
 // ── Props ─────────────────────────────────────────────────────────────────────
@@ -258,14 +219,14 @@ interface Props {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function MapOL({
+const MapOL = forwardRef<MapOLRef, Props>(function MapOL({
   center, zoom, tool, drawSubTool, drawType, onParcelSelect, selectedParcel,
   shapes, onShapeDrawn, onShapeDelete, onShapeUpdate, pluRules,
   pluAnalyzed, zoneMode,
   accessPoint, pickingAccess, onSetAccess,
   selectedShapeId, onShapeSelect, editMode,
   existingBuildings, snapConfig,
-}: Props) {
+}: Props, ref) {
   const containerRef    = useRef<HTMLDivElement>(null);
   const mapRef          = useRef<Map | null>(null);
   const snapOverRef     = useRef<Overlay | null>(null);
@@ -282,6 +243,9 @@ export default function MapOL({
   const zoneSourceRef       = useRef(new VectorSource());
   const cotesSourceRef      = useRef(new VectorSource());
   const previewSourceRef    = useRef(new VectorSource());
+  const measureSourceRef    = useRef(new VectorSource());
+  const measurePtsRef       = useRef<[number, number][]>([]);
+  const measureLabelOvsRef  = useRef<Overlay[]>([]);
   const snapSourceRef       = useRef(new VectorSource());
   const accessSourceRef     = useRef(new VectorSource());
 
@@ -376,12 +340,13 @@ export default function MapOL({
     const map = new Map({
       target: containerRef.current,
       layers: [
-        new TileLayer({ source: new OSM(), zIndex: 0 }),
+        new TileLayer({ source: new OSM({ crossOrigin: "anonymous" }), zIndex: 0 }),
         new TileLayer({
           source: new XYZ({
             url: "https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=CADASTRALPARCELS.PARCELLAIRE_EXPRESS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image/png",
             minZoom: 15,
             maxZoom: 19,
+            crossOrigin: "anonymous",
           }),
           opacity: 0.5,
           minZoom: 15,
@@ -393,9 +358,10 @@ export default function MapOL({
         new VectorLayer({ source: zoneSourceRef.current,      zIndex: 5, style: zoneStyle }),
         new VectorLayer({ source: cotesSourceRef.current,     zIndex: 6 }),
         (() => { const l = new VectorLayer({ source: shapesSourceRef.current, zIndex: 7 }); shapesLayerRef.current = l; return l; })(),
-        new VectorLayer({ source: previewSourceRef.current,   zIndex: 8 }),
-        new VectorLayer({ source: snapSourceRef.current,      zIndex: 9, style: snapDotStyle }),
-        new VectorLayer({ source: accessSourceRef.current,    zIndex: 10 }),
+        new VectorLayer({ source: measureSourceRef.current,   zIndex: 8, style: measureStyleFn }),
+        new VectorLayer({ source: previewSourceRef.current,   zIndex: 9 }),
+        new VectorLayer({ source: snapSourceRef.current,      zIndex: 10, style: snapDotStyle }),
+        new VectorLayer({ source: accessSourceRef.current,    zIndex: 11 }),
       ],
       view: new View({
         center: ll2ol(center[0], center[1]),
@@ -495,6 +461,57 @@ export default function MapOL({
         return;
       }
 
+      if (toolRef.current === "measure") {
+        const [lat, lon] = ol2ll(evt.coordinate);
+        const res = map.getView().getResolution() ?? 1;
+        const toleranceM = Math.max(0.2, res * Math.cos((lat * Math.PI) / 180) * 10);
+        const snap = computeSnap(lat, lon, parcelRef.current?.ring ?? null, shapesRef.current.map(s => s.polygon), measurePtsRef.current, toleranceM, snapConfigRef.current);
+
+        const snapDotM = snapDotRef.current;
+        const snapOvM  = snapOverRef.current;
+        const snapLblM = snapLabelRef.current;
+        const snapLblOvM = snapLabelOvRef.current;
+
+        if (snapDotM && snapOvM) {
+          if (snap.type !== "free") {
+            snapDotM.style.display = "block";
+            const dotColor = snap.type === "perp-seg" ? "#3d8a65" : snap.type === "perp" ? "#2d6a4f" : snap.type === "close" ? "#2d6a4f" : "#c4a35a";
+            snapDotM.style.backgroundColor = dotColor;
+            snapDotM.style.boxShadow = `0 0 0 2px ${dotColor}`;
+            snapOvM.setPosition(ll2ol(snap.lat, snap.lon));
+          } else {
+            snapDotM.style.display = "none";
+          }
+        }
+        if (snapLblM && snapLblOvM) {
+          const lbl = snap.type === "angle" ? `${snap.angleDeg?.toFixed(0)}°` : (SNAP_LABELS[snap.type] ?? "");
+          if (lbl) { snapLblM.textContent = lbl; snapLblM.style.display = "block"; snapLblOvM.setPosition(ll2ol(snap.lat, snap.lon)); }
+          else snapLblM.style.display = "none";
+        }
+
+        const pts = measurePtsRef.current;
+        const distLabelM = distLabelElRef.current;
+        const distLabelOvM = distLabelOvRef.current;
+        if (pts.length > 0) {
+          const last = pts[pts.length - 1];
+          previewSourceRef.current.clear();
+          previewSourceRef.current.addFeature(new Feature(new OLLineString([ll2ol(last[0], last[1]), ll2ol(snap.lat, snap.lon)])));
+          if (distLabelM && distLabelOvM) {
+            const segD = distM(last[0], last[1], snap.lat, snap.lon);
+            let totalPrev = 0;
+            for (let i = 1; i < pts.length; i++) totalPrev += distM(pts[i-1][0], pts[i-1][1], pts[i][0], pts[i][1]);
+            const txt = pts.length > 1 ? `${fmtDist(segD)}  ∑ ${fmtDist(totalPrev + segD)}` : fmtDist(segD);
+            distLabelM.textContent = txt;
+            distLabelM.style.display = "block";
+            distLabelOvM.setPosition(ll2ol((last[0] + snap.lat) / 2, (last[1] + snap.lon) / 2));
+          }
+        } else {
+          previewSourceRef.current.clear();
+          if (distLabelM) distLabelM.style.display = "none";
+        }
+        return;
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const hit = map.forEachFeatureAtPixel(evt.pixel, (f: any) => f as Feature, {
         layerFilter: (l: unknown) => (l as VectorLayer<VectorSource>).getSource() === parcelsSourceRef.current,
@@ -550,6 +567,37 @@ export default function MapOL({
         }
       }
 
+      if (toolRef.current === "measure") {
+        evt.stopPropagation?.();
+        const [lat, lon] = ol2ll(evt.coordinate);
+        const res = map.getView().getResolution() ?? 1;
+        const toleranceM = Math.max(0.2, res * Math.cos((lat * Math.PI) / 180) * 10);
+        const snap = computeSnap(lat, lon, parcelRef.current?.ring ?? null, shapesRef.current.map(s => s.polygon), measurePtsRef.current, toleranceM, snapConfigRef.current);
+        const pts = measurePtsRef.current;
+
+        if (pts.length > 0) {
+          const last = pts[pts.length - 1];
+          // Segment validé : trait permanent
+          measureSourceRef.current.addFeature(new Feature(new OLLineString([ll2ol(last[0], last[1]), ll2ol(snap.lat, snap.lon)])));
+          // Label permanent sur le segment
+          const segD = distM(last[0], last[1], snap.lat, snap.lon);
+          let totalPrev = 0;
+          for (let i = 1; i < pts.length; i++) totalPrev += distM(pts[i-1][0], pts[i-1][1], pts[i][0], pts[i][1]);
+          const txt = pts.length > 1 ? `${fmtDist(segD)}  ∑ ${fmtDist(totalPrev + segD)}` : fmtDist(segD);
+          const labelEl = document.createElement("div");
+          labelEl.className = "dist-label";
+          labelEl.textContent = txt;
+          const ov = new Overlay({ element: labelEl, positioning: "bottom-center", offset: [0, -4], stopEvent: false });
+          map.addOverlay(ov);
+          ov.setPosition(ll2ol((last[0] + snap.lat) / 2, (last[1] + snap.lon) / 2));
+          measureLabelOvsRef.current.push(ov);
+        }
+        // Dot permanent au point cliqué
+        measureSourceRef.current.addFeature(new Feature(new OLPoint(ll2ol(snap.lat, snap.lon))));
+        pts.push([snap.lat, snap.lon]);
+        return;
+      }
+
       if (toolRef.current === "draw") {
         evt.stopPropagation?.();
         const [lat, lon] = ol2ll(evt.coordinate);
@@ -602,19 +650,27 @@ export default function MapOL({
       onParcelSelect(parcelInfo);
     });
 
-    // Double click → finalize drawing
+    // Double click → finalize drawing / end measure
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     map.on("dblclick", (evt: any) => {
+      if (toolRef.current === "measure") {
+        evt.preventDefault?.();
+        // Supprime le dernier point ajouté par le singleclick du dblclick
+        if (measurePtsRef.current.length > 0) measurePtsRef.current.pop();
+        cancelMeasure();
+        return;
+      }
       if (toolRef.current !== "draw") return;
       if (verticesRef.current.length < 3) return;
       evt.preventDefault?.();
       finalizePolygon();
     });
 
-    // Right click → cancel drawing
+    // Right click → cancel drawing / cancel measure
     containerRef.current.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       if (toolRef.current === "draw") cancelDrawing();
+      if (toolRef.current === "measure") cancelMeasure();
     });
 
     return () => {
@@ -678,6 +734,18 @@ export default function MapOL({
     if (dimInputRef.current) { dimInputRef.current.value = ""; dimInputRef.current.blur(); }
   }, [onShapeDrawn]);
 
+  // ── Mesure — annulation / réinitialisation ────────────────────────────────
+  const cancelMeasure = useCallback(() => {
+    measurePtsRef.current = [];
+    measureSourceRef.current.clear();
+    for (const ov of measureLabelOvsRef.current) mapRef.current?.removeOverlay(ov);
+    measureLabelOvsRef.current = [];
+    previewSourceRef.current.clear();
+    if (distLabelElRef.current)  distLabelElRef.current.style.display  = "none";
+    if (snapDotRef.current)      snapDotRef.current.style.display      = "none";
+    if (snapLabelRef.current)    snapLabelRef.current.style.display    = "none";
+  }, []);
+
   // ── Cancel drawing ──────────────────────────────────────────────────────────
   const cancelDrawing = useCallback(() => {
     verticesRef.current = [];
@@ -688,7 +756,7 @@ export default function MapOL({
     if (dimInputRef.current) { dimInputRef.current.value = ""; dimInputRef.current.blur(); }
   }, []);
 
-  // ── Reset drawing on tool change ────────────────────────────────────────────
+  // ── Reset drawing/measure on tool change ────────────────────────────────────
   useEffect(() => {
     if (tool !== "draw") {
       cancelDrawing();
@@ -696,15 +764,20 @@ export default function MapOL({
       if (snapLabelRef.current) snapLabelRef.current.style.display = "none";
       if (distLabelElRef.current) distLabelElRef.current.style.display = "none";
     }
+    if (tool !== "measure") cancelMeasure();
     if (mapRef.current) {
-      const cursor = tool === "draw" ? "crosshair" : editMode === "drag" ? "move" : "";
+      const cursor = (tool === "draw" || tool === "measure") ? "crosshair" : editMode === "drag" ? "move" : "";
       mapRef.current.getTargetElement().style.cursor = cursor;
     }
-  }, [tool, editMode, cancelDrawing]);
+  }, [tool, editMode, cancelDrawing, cancelMeasure]);
 
   // ── Keyboard shortcuts ──────────────────────────────────────────────────────
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      if (toolRef.current === "measure") {
+        if (e.key === "Escape") { e.preventDefault(); cancelMeasure(); }
+        return;
+      }
       if (toolRef.current !== "draw") return;
 
       const dimInput = dimInputRef.current;
@@ -759,7 +832,7 @@ export default function MapOL({
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [cancelDrawing, finalizePolygon, updatePreview]);
+  }, [cancelDrawing, cancelMeasure, finalizePolygon, updatePreview]);
 
   // ── Translate (déplacement) ─────────────────────────────────────────────────
   // Utilise le layer ref — OL résout les features dynamiquement, sans Collection stale
@@ -1168,6 +1241,51 @@ export default function MapOL({
     selectedSourceRef.current.addFeature(feat);
   }, [selectedParcel]);
 
+  // ── Expose captureMap via ref ─────────────────────────────────────────────
+  useImperativeHandle(ref, () => ({
+    captureMap: () =>
+      new Promise<MapCapture | null>((resolve) => {
+        const map = mapRef.current;
+        if (!map) { resolve(null); return; }
+        map.once("rendercomplete", () => {
+          try {
+            const size = map.getSize() ?? [0, 0];
+            const canvas = document.createElement("canvas");
+            canvas.width  = size[0];
+            canvas.height = size[1];
+            const ctx = canvas.getContext("2d")!;
+            const mapEl = map.getTargetElement() as HTMLElement;
+            mapEl.querySelectorAll<HTMLCanvasElement>(".ol-layer canvas").forEach((c) => {
+              if (c.width === 0) return;
+              ctx.globalAlpha = parseFloat(c.style.opacity || "1") || 1;
+              const transform = c.style.transform;
+              if (transform && transform !== "none") {
+                const m = transform.match(/matrix\(([^)]+)\)/);
+                if (m) {
+                  const nums = m[1].split(",").map(Number);
+                  ctx.setTransform(nums[0], nums[1], nums[2], nums[3], nums[4], nums[5]);
+                }
+              } else {
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+              }
+              ctx.drawImage(c, 0, 0);
+            });
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+            // Extent géographique de la vue
+            const olExtent = map.getView().calculateExtent(size);
+            const [x0, y0, x1, y1] = olExtent;
+            const [minLon, minLat] = toLonLat([x0, y0]);
+            const [maxLon, maxLat] = toLonLat([x1, y1]);
+            resolve({ dataUrl, extent: [minLon, minLat, maxLon, maxLat] });
+          } catch {
+            resolve(null);
+          }
+        });
+        map.renderSync();
+      }),
+  }), []);
+
   return (
     <div ref={containerRef} className="ol-map w-full h-full">
       {/* Saisie de cote */}
@@ -1194,4 +1312,6 @@ export default function MapOL({
       )}
     </div>
   );
-}
+});
+
+export default MapOL;

@@ -164,6 +164,14 @@ const GEMINI_SCHEMA = {
     surfaceMaxAnnexe:     { type: "NUMBER", description: "Surface de plancher ou d'emprise max pour une annexe en m² (0 si non précisé)" },
     longueurMaxAnnexe:    { type: "NUMBER", description: "Longueur ou dimension max d'une annexe en mètres (0 si non précisé)" },
     hauteurMaxAnnexe:     { type: "NUMBER", description: "Hauteur max des annexes/dépendances en mètres (0 si non précisé)" },
+    // Règles d'aspect
+    aspectToiture:    { type: "STRING", description: "Type(s) de toiture autorisé(s) selon le PLU/CPAP (ex: '2 ou 4 pentes, pente 30–45°, toiture terrasse autorisée sous conditions'). Chaîne vide si non précisé." },
+    aspectTuiles:     { type: "STRING", description: "Type de tuiles ou couverture exigé(e) (ex: 'tuiles canal ou romanes, ton naturel, ardoise interdite'). Chaîne vide si non précisé." },
+    aspectMenuiseries: { type: "STRING", description: "Prescriptions sur les menuiseries (ex: 'teintes naturelles bois ou métal, blanc pur interdit, volets bois obligatoires'). Chaîne vide si non précisé." },
+    aspectClotures:   { type: "STRING", description: "Règles des clôtures : matériaux, hauteur max côté voirie et côté limites, type de haie (ex: 'côté voirie : mur bahut ≤ 0.6 m + grillage + haie, h max 1.5 m'). Chaîne vide si non précisé." },
+    aspectVegetaux:   { type: "STRING", description: "Obligations de plantation ou d'espaces verts (ex: '1 arbre haute-tige pour 200 m² de terrain, plantation haie d'espèces locales'). Chaîne vide si non précisé." },
+    aspectPiscine:    { type: "STRING", description: "Règles spécifiques aux piscines et bassins (ex: 'autorisée, recul min 1.5 m des limites, bassin enterré max'). Chaîne vide si non précisé." },
+    aspectTerrasses:  { type: "STRING", description: "Règles spécifiques aux terrasses (ex: 'terrasse plain-pied autorisée, surélevée ≤ 0.60 m du terrain naturel, bois ou carrelage'). Chaîne vide si non précisé." },
   },
   required: [
     "resume", "zoneLibelle", "commune",
@@ -171,6 +179,8 @@ const GEMINI_SCHEMA = {
     "empriseMaxPct", "hauteurMax", "espacesVertsPct",
     "parkingPlaces", "sourcePlu", "pointsAttention", "resume_cpap", "avertissement",
     "retraitVoirieAnnexe", "surfaceMaxAnnexe", "longueurMaxAnnexe", "hauteurMaxAnnexe",
+    "aspectToiture", "aspectTuiles", "aspectMenuiseries", "aspectClotures",
+    "aspectVegetaux", "aspectPiscine", "aspectTerrasses",
   ],
 };
 
@@ -270,7 +280,18 @@ Instructions :
 - Le champ "avertissement" doit être exactement : "${avertissement}"
 ${heightNote}${cpapNote}`;
 
-    const parts: Record<string, unknown>[] = [{ text: promptText }];
+    const aspectNote = `
+
+RÈGLES D'ASPECT — extraire pour chaque champ (chaîne vide si non précisé dans le document) :
+- aspectToiture : type(s) de toiture, pentes, matériaux de couverture du bâtiment principal
+- aspectTuiles : nature exacte des tuiles/ardoise/bac acier autorisé(e)(s) — couleurs, références
+- aspectMenuiseries : teintes, matériaux, types de fenêtres/volets/portes
+- aspectClotures : hauteur max, matériaux côté voirie ET côté limites séparatives, haies
+- aspectVegetaux : obligations de plantation, essences imposées, ratio surface plantée
+- aspectPiscine : conditions d'implantation, reculs, traitement du débordement
+- aspectTerrasses : conditions d'implantation, hauteur max, matériaux`;
+
+    const parts: Record<string, unknown>[] = [{ text: promptText + aspectNote }];
     if (pluDoc) parts.push({ inlineData: { mimeType: pluDoc.mimeType, data: pluDoc.base64 } });
     if (hasCpap) parts.push({ inlineData: { mimeType: cpapMimeType ?? "application/pdf", data: cpapBase64 } });
 

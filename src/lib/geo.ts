@@ -486,42 +486,45 @@ export function minDistToFondEdges(
 
 /**
  * Distance minimale de shapePoly aux arêtes "voirie" de la parcelle.
- * Une arête est voirie si son milieu pointe vers le point d'accès
- * (dot > DOT_VOIRIE avec le vecteur centroïde → accessPoint).
+ * Utilise le même critère que classifyEdgeSetbacks (MapOL) :
+ * voirie = arête(s) dont la distance au point d'accès ≤ minDist + 20 % + 0.8 m.
+ * → cohérence garantie entre la zone constructible affichée et le check de conformité.
  */
 export function minDistToVoirieEdges(
   shapePoly: [number, number][],
   parcelRing: [number, number][],
   access: { lat: number; lon: number },
 ): number {
-  const DOT_VOIRIE = 0.5;
   const n = shapePoly.length;
   if (n < 1) return Infinity;
 
+  // ── 1. Identifier les arêtes voirie (même algo que classifyEdgeSetbacks) ──
+  const kp = kLon(access.lat);
+  const ax = access.lon * kp, ay = access.lat * K_LAT;
+  const nP = parcelRing.length - 1;
+  const ringM = parcelRing.map(([lon, lat]) => [lon * kp, lat * K_LAT] as [number, number]);
+
+  const edgeDists = Array.from({ length: nP }, (_, j) => {
+    const [x1, y1] = ringM[j], [x2, y2] = ringM[j + 1];
+    const dx = x2 - x1, dy = y2 - y1, len2 = dx * dx + dy * dy;
+    if (len2 < 1e-10) return Infinity;
+    const t = Math.max(0, Math.min(1, ((ax - x1) * dx + (ay - y1) * dy) / len2));
+    return Math.sqrt((ax - x1 - t * dx) ** 2 + (ay - y1 - t * dy) ** 2);
+  });
+
+  const minEdgeDist = Math.min(...edgeDists);
+  const vTol = minEdgeDist * 0.20 + 0.8;
+  const voirieEdges = edgeDists
+    .map((d, j) => (d <= minEdgeDist + vTol ? j : -1))
+    .filter(j => j >= 0);
+
+  if (voirieEdges.length === 0) return Infinity;
+
+  // ── 2. Distance minimale shape → arêtes voirie ────────────────────────────
   const avgLat = shapePoly.reduce((s, [lat]) => s + lat, 0) / n;
   const kl = kLon(avgLat);
-
   const shapeM  = shapePoly.map(([lat, lon]) => [lon * kl, lat * K_LAT] as [number, number]);
   const parcelM = parcelRing.map(([lon, lat]) => [lon * kl, lat * K_LAT] as [number, number]);
-  const nP = parcelM.length - 1;
-
-  const cx0 = parcelM.slice(0, nP).reduce((s, [x]) => s + x, 0) / nP;
-  const cy0 = parcelM.slice(0, nP).reduce((s, [, y]) => s + y, 0) / nP;
-
-  const ax = access.lon * kl - cx0, ay = access.lat * K_LAT - cy0;
-  const aLen = Math.sqrt(ax * ax + ay * ay);
-  if (aLen < 1e-6) return Infinity;
-  const anx = ax / aLen, any = ay / aLen;
-
-  const voirieEdges: number[] = [];
-  for (let j = 0; j < nP; j++) {
-    const mx = (parcelM[j][0] + parcelM[j + 1][0]) / 2 - cx0;
-    const my = (parcelM[j][1] + parcelM[j + 1][1]) / 2 - cy0;
-    const mLen = Math.sqrt(mx * mx + my * my);
-    if (mLen < 1e-6) continue;
-    if ((mx * anx + my * any) / mLen > DOT_VOIRIE) voirieEdges.push(j);
-  }
-  if (voirieEdges.length === 0) return Infinity;
 
   const candidates: [number, number][] = [];
   for (let i = 0; i < n; i++) {
@@ -542,6 +545,66 @@ export function minDistToVoirieEdges(
     }
   }
   return minDist;
+}
+
+// ── Classification des arêtes (voirie / latéral / fond) ──────────────────────
+
+/**
+ * Pour chaque arête de la parcelle, retourne le recul applicable :
+ *   rv = voirie, rl = latéral, rf = fond.
+ * Voirie  = arête(s) dont la distance au point d'accès ≤ minDist × 1,20 + 0,8 m.
+ * Fond    = arête opposée à l'accès (dot le plus négatif, < −0,30).
+ * ring    : [lon, lat][] GeoJSON
+ */
+export function classifyEdgeSetbacks(
+  ring: [number, number][],
+  access: { lat: number; lon: number } | null,
+  rv: number, rl: number, rf: number,
+): number[] {
+  const n = ring.length - 1;
+  if (!access) return Array(n).fill(rl);
+
+  const avgLat = ring.slice(0, n).reduce((s, [, lat]) => s + lat, 0) / n;
+  const kl = kLon(avgLat);
+
+  const ax = access.lon * kl, ay = access.lat * K_LAT;
+  const cx = ring.slice(0, n).reduce((s, [lon]) => s + lon * kl, 0) / n;
+  const cy = ring.slice(0, n).reduce((s, [, lat]) => s + lat * K_LAT, 0) / n;
+
+  const dacx = ax - cx, dacy = ay - cy;
+  const dacLen = Math.sqrt(dacx * dacx + dacy * dacy);
+  if (dacLen < 0.01) return Array(n).fill(rl);
+  const anx = dacx / dacLen, any = dacy / dacLen;
+
+  const edges = Array.from({ length: n }, (_, i) => {
+    const [lon1, lat1] = ring[i], [lon2, lat2] = ring[(i + 1) % n];
+    const x1 = lon1 * kl, y1 = lat1 * K_LAT;
+    const x2 = lon2 * kl, y2 = lat2 * K_LAT;
+    const dx = x2 - x1, dy = y2 - y1;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    if (len < 0.01) return { dist: Infinity, dot: 0 };
+
+    let nx = -dy / len, ny = dx / len;
+    const midx = (x1 + x2) / 2, midy = (y1 + y2) / 2;
+    if (nx * (cx - midx) + ny * (cy - midy) > 0) { nx = -nx; ny = -ny; }
+    const dot = nx * anx + ny * any;
+
+    const len2 = len * len;
+    const t = Math.max(0, Math.min(1, ((ax - x1) * dx + (ay - y1) * dy) / len2));
+    const px = x1 + t * dx, py = y1 + t * dy;
+    const dist = Math.sqrt((ax - px) ** 2 + (ay - py) ** 2);
+    return { dist, dot };
+  });
+
+  const minDist = Math.min(...edges.map(e => e.dist));
+  const vTol    = minDist * 0.20 + 0.8;
+  const minDot  = Math.min(...edges.map(e => e.dot));
+
+  return edges.map(({ dist, dot }) => {
+    if (dist <= minDist + vTol)             return rv;  // voirie
+    if (dot <= minDot + 0.15 && dot < -0.30) return rf;  // fond
+    return rl;                                            // latéral
+  });
 }
 
 // ── Zone constructible ─────────────────────────────────────────────────────────
@@ -840,6 +903,14 @@ export interface PluRules {
   surfaceMaxAnnexe:     number;  // m² (0 = non précisé)
   longueurMaxAnnexe:    number;  // mètres (0 = non précisé)
   hauteurMaxAnnexe:     number;  // mètres (0 = non précisé)
+  // Règles d'aspect (qualitatives — texte libre extrait du PLU/CPAP)
+  aspectToiture:        string;  // type de toiture (ex: "4 pentes, tuiles canal obligatoires")
+  aspectTuiles:         string;  // couverture (ex: "tuiles rondes canal, ton naturel")
+  aspectMenuiseries:    string;  // menuiseries (ex: "couleurs naturelles, blanc interdit")
+  aspectClotures:       string;  // clôtures (ex: "mur enduit max 1.6 m côté voirie")
+  aspectVegetaux:       string;  // végétaux (ex: "1 arbre tige pour 50 m² de terrain")
+  aspectPiscine:        string;  // piscine / bassin (ex: "autorisée, recul 1 m des limites")
+  aspectTerrasses:      string;  // terrasses (ex: "surélevées ≤ 0.6 m du sol fini")
 }
 
 export interface ConformiteResult {
