@@ -717,7 +717,7 @@ const MapOL = forwardRef<MapOLRef, Props>(function MapOL({
       type,
       polygon: [...verts],
       surfaceM2: surface,
-      label: `${cfg.label} ${shapesRef.current.length + 1}`,
+      label: cfg.label,
       hauteurBase: cfg.hauteurBaseDefaut,
       hauteurFaitage: cfg.hauteurFaitageDefaut,
     };
